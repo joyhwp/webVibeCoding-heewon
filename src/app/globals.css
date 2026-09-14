@@ -1,8 +1,57 @@
 @import "tailwindcss";
 
+/* dark: 유틸리티가 OS 설정이 아니라 <html data-theme="dark">를 따르게 함
+   (시간대 기준 자동 전환 + 수동 토글이 항상 실제로 반영되도록) */
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #1d1d1f;
+
+  /* 낮 하늘 톤 — 은은한 블루에서 거의 흰색으로, 채도 낮게. 그 위를 흘러가는
+     구름(CloudBackground.tsx)과 짝을 이뤄 다크모드의 밤하늘(별)에 대응한다. */
+  --gradient-bg: linear-gradient(180deg, #cfe3f7 0%, #e7f0fa 45%, #fbfcfe 100%);
+
+  --glass-bg: rgba(255, 255, 255, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.8);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  /* hover 시 살짝 떠오르는 카드용 — 기본 그림자보다 크고 은은하게 */
+  --glass-shadow-hover: 0 10px 24px rgba(0, 0, 0, 0.16);
+
+  /* study 탭 코드 블록(highlight.js) 색상 — 라이트 */
+  --hljs-keyword: #a626a4;
+  --hljs-string: #50a14f;
+  --hljs-number: #986801;
+  --hljs-comment: #a0a1a7;
+  --hljs-function: #4078f2;
+  --hljs-builtin: #c18401;
+  --hljs-variable: #e45649;
+
+  /* Today 탭 카테고리 accent — 라이트. dataviz 스킬 카테고리 팔레트에서
+     가져온 값(school=orange, club=aqua, tutoring=yellow, exam=magenta,
+     assignment=green, dearTime=violet, study=red). class(반복 수업)는
+     사이트 전역 accent인 blue, personal은 가장 중립적인 카테고리라
+     무채색(slate)을 쓴다. -soft는 카드 배경 틴트용 저채도 버전. */
+  --cat-class: #2a78d6;
+  --cat-class-soft: rgba(42, 120, 214, 0.12);
+  --cat-personal: #64748b;
+  --cat-personal-soft: rgba(100, 116, 139, 0.12);
+  --cat-school: #eb6834;
+  --cat-school-soft: rgba(235, 104, 52, 0.14);
+  --cat-club: #1baf7a;
+  --cat-club-soft: rgba(27, 175, 122, 0.14);
+  --cat-tutoring: #eda100;
+  --cat-tutoring-soft: rgba(237, 161, 0, 0.16);
+  --cat-exam: #e87ba4;
+  --cat-exam-soft: rgba(232, 123, 164, 0.16);
+  --cat-assignment: #008300;
+  --cat-assignment-soft: rgba(0, 131, 0, 0.12);
+  --cat-deartime: #4a3aa7;
+  --cat-deartime-soft: rgba(74, 58, 167, 0.14);
+  --cat-study: #e34948;
+  --cat-study-soft: rgba(227, 73, 72, 0.14);
+  --cat-project: #a1662f;
+  --cat-project-soft: rgba(161, 102, 47, 0.14);
 }
 
 @theme inline {
@@ -12,15 +61,402 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* prefers-color-scheme는 (아직 테마 스크립트가 못 붙는 극단적 상황을 대비한)
+   폴백일 뿐이다. 실제 라이트/다크는 layout.tsx의 블로킹 스크립트가 시간대
+   기준(또는 오늘자 수동 토글)으로 계산해 <html data-theme="..."> 로 확정한다. */
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  :root:not([data-theme="light"]) {
+    --background: #0f1115;
+    --foreground: #e9eaee;
+
+    --gradient-bg: linear-gradient(180deg, #0f1115 0%, #12141a 50%, #0f1115 100%);
+
+    --glass-bg: rgba(30, 30, 35, 0.55);
+    --glass-border: rgba(255, 255, 255, 0.14);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+    --glass-shadow-hover: 0 10px 26px rgba(0, 0, 0, 0.5);
+
+    --hljs-keyword: #c678dd;
+    --hljs-string: #98c379;
+    --hljs-number: #d19a66;
+    --hljs-comment: #7f848e;
+    --hljs-function: #61afef;
+    --hljs-builtin: #e5c07b;
+    --hljs-variable: #e06c75;
+
+    /* Today 탭 카테고리 accent — 다크 */
+    --cat-class: #3987e5;
+    --cat-class-soft: rgba(57, 135, 229, 0.16);
+    --cat-personal: #94a3b8;
+    --cat-personal-soft: rgba(148, 163, 184, 0.14);
+    --cat-school: #d95926;
+    --cat-school-soft: rgba(217, 89, 38, 0.18);
+    --cat-club: #199e70;
+    --cat-club-soft: rgba(25, 158, 112, 0.18);
+    --cat-tutoring: #c98500;
+    --cat-tutoring-soft: rgba(201, 133, 0, 0.2);
+    --cat-exam: #d55181;
+    --cat-exam-soft: rgba(213, 81, 129, 0.2);
+    --cat-assignment: #2fae2f;
+    --cat-assignment-soft: rgba(47, 174, 47, 0.18);
+    --cat-deartime: #9085e9;
+    --cat-deartime-soft: rgba(144, 133, 233, 0.18);
+    --cat-study: #e66767;
+    --cat-study-soft: rgba(230, 103, 103, 0.18);
+    --cat-project: #c9975a;
+    --cat-project-soft: rgba(201, 151, 90, 0.2);
   }
 }
 
+:root[data-theme="dark"] {
+  --background: #0f1115;
+  --foreground: #e9eaee;
+
+  --gradient-bg: linear-gradient(180deg, #0f1115 0%, #12141a 50%, #0f1115 100%);
+
+  --glass-bg: rgba(30, 30, 35, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+  --glass-shadow-hover: 0 10px 26px rgba(0, 0, 0, 0.5);
+
+  --hljs-keyword: #c678dd;
+  --hljs-string: #98c379;
+  --hljs-number: #d19a66;
+  --hljs-comment: #7f848e;
+  --hljs-function: #61afef;
+  --hljs-builtin: #e5c07b;
+  --hljs-variable: #e06c75;
+
+  --cat-class: #3987e5;
+  --cat-class-soft: rgba(57, 135, 229, 0.16);
+  --cat-personal: #94a3b8;
+  --cat-personal-soft: rgba(148, 163, 184, 0.14);
+  --cat-school: #d95926;
+  --cat-school-soft: rgba(217, 89, 38, 0.18);
+  --cat-club: #199e70;
+  --cat-club-soft: rgba(25, 158, 112, 0.18);
+  --cat-tutoring: #c98500;
+  --cat-tutoring-soft: rgba(201, 133, 0, 0.2);
+  --cat-exam: #d55181;
+  --cat-exam-soft: rgba(213, 81, 129, 0.2);
+  --cat-assignment: #2fae2f;
+  --cat-assignment-soft: rgba(47, 174, 47, 0.18);
+  --cat-deartime: #9085e9;
+  --cat-deartime-soft: rgba(144, 133, 233, 0.18);
+  --cat-study: #e66767;
+  --cat-study-soft: rgba(230, 103, 103, 0.18);
+  --cat-project: #c9975a;
+  --cat-project-soft: rgba(201, 151, 90, 0.2);
+}
+
 body {
-  background: var(--background);
+  background: var(--gradient-bg) fixed;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont,
+    "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+@layer components {
+  .glass-panel {
+    background-color: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    transition:
+      background-color 0.3s ease,
+      border-color 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+
+  /* hover 시 살짝 떠오르며 그림자가 커지는 카드. In Progress 카드
+     (ProgressCard.tsx)에서 사용 — 회전/높이 편차 없이 반듯하게 정렬된
+     채로, hover 피드백만 준다.
+     - transition: all 로 묶어서 transform/box-shadow/background가 같이
+       부드럽게 움직인다(색이 바뀌는 카드가 생겨도 자동으로 대응).
+     - backdrop-filter(blur)가 걸린 요소에 transform을 주면 브라우저가
+       매 프레임 새로 레이어를 합성하면서 경계가 살짝 깨져 보일 수 있어,
+       will-change: transform으로 미리 별도 레이어를 만들어두게 한다. */
+  .hover-lift {
+    transition: all 0.3s ease;
+    will-change: transform;
+  }
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--glass-shadow-hover);
+  }
+}
+
+/* 라이트/다크 전환 시 텍스트·테두리 색도 함께 부드럽게 바뀌도록.
+   @layer base에 둬서 Tailwind utility(transition-colors 등)가 있는
+   요소는 그쪽이 우선하고, 없는 요소만 이 기본값을 쓰게 한다. */
+@layer base {
+  * {
+    transition-property: color, border-color;
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+  }
+}
+
+/* 상단 탭 전환 애니메이션 (PageTransition.tsx에서 사용) */
+@keyframes tab-transition-enter {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes tab-transition-leave {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.tab-transition-enter {
+  animation: tab-transition-enter 0.22s ease-out both;
+}
+
+.tab-transition-leave {
+  animation: tab-transition-leave 0.12s ease-in both;
+}
+
+/* 삭제 되돌리기 토스트 (ToastContainer.tsx) */
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes toast-countdown {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+/* 할일 체크 애니메이션 (TimelineEntry.tsx, AllDayRow.tsx) */
+@keyframes check-pop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes check-flash {
+  0% {
+    background-color: transparent;
+  }
+  30% {
+    background-color: var(--check-flash-color, rgba(59, 130, 246, 0.35));
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.check-pop {
+  animation: check-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.check-flash {
+  animation: check-flash 0.5s ease-out both;
+  border-radius: inherit;
+}
+
+/* 빈 상태 일러스트가 아주 느리게 둥둥 떠다니는 효과 */
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.float-slow {
+  animation: float-slow 4s ease-in-out infinite;
+}
+
+/* 캘린더 날짜 칸 클릭 리플 */
+@keyframes ripple-expand {
+  from {
+    transform: scale(0);
+    opacity: 0.35;
+  }
+  to {
+    transform: scale(2.8);
+    opacity: 0;
+  }
+}
+
+.ripple-expand {
+  animation: ripple-expand 0.5s ease-out forwards;
+}
+
+/* 라이트모드 낮 하늘 배경(CloudBackground.tsx) — 다크모드의 별 배경과 짝을
+   이루는 테마. 구름 패턴을 정확히 같은 모양으로 두 장(tile) 나란히 두고,
+   그 컨테이너를 딱 한 장 너비(-100vw)만큼 transform: translateX로 밀어서
+   완전히 매끄럽게 무한 반복되게 한다 — background-position 애니메이션과
+   달리 transform만 쓰므로 리페인트 없이 가볍게(합성만으로) 움직인다. */
+@keyframes cloud-drift {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100vw);
+  }
+}
+
+.cloud-sky-track {
+  display: flex;
+  width: 200vw;
+  height: 100%;
+  filter: blur(6px);
+  animation: cloud-drift 36s linear infinite;
+  will-change: transform;
+}
+
+.cloud-sky-tile {
+  flex: 0 0 100vw;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  /* 은은한 회백색 구름 여러 개 — 크고 흐린 것(멀리 있는 느낌)과
+     작고 좀 더 또렷한 것(가까이 있는 느낌)을 섞는다.
+     하늘 자체가 거의 흰색에 가까운 그라데이션이라, 구름 alpha를 꽤
+     높게 잡아야 실제로 대비가 생겨 눈에 보인다(낮게 잡으면 사실상
+     안 보이는 수준이 됨 — 한 번 겪은 버그). */
+  background-image: radial-gradient(
+      ellipse 38% 16% at 8% 20%,
+      rgba(255, 255, 255, 0.62),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 34% 15% at 62% 12%,
+      rgba(255, 255, 255, 0.58),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 42% 18% at 38% 68%,
+      rgba(255, 255, 255, 0.55),
+      transparent 72%
+    ),
+    radial-gradient(
+      ellipse 24% 11% at 85% 45%,
+      rgba(255, 255, 255, 0.78),
+      transparent 68%
+    ),
+    radial-gradient(
+      ellipse 22% 10% at 18% 52%,
+      rgba(255, 255, 255, 0.75),
+      transparent 68%
+    ),
+    radial-gradient(
+      ellipse 14% 7% at 72% 80%,
+      rgba(255, 255, 255, 0.95),
+      transparent 64%
+    ),
+    radial-gradient(
+      ellipse 12% 6% at 30% 30%,
+      rgba(255, 255, 255, 0.92),
+      transparent 64%
+    );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cloud-sky-track {
+    animation: none !important;
+  }
+}
+
+/* study 탭 코드 블록 문법 강조 (CodeBlock.tsx, highlight.js) */
+.hljs {
+  background: transparent;
+  color: var(--foreground);
+}
+.hljs-comment,
+.hljs-quote {
+  color: var(--hljs-comment);
+  font-style: italic;
+}
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-subst,
+.hljs-operator {
+  color: var(--hljs-keyword);
+}
+.hljs-string,
+.hljs-doctag,
+.hljs-regexp {
+  color: var(--hljs-string);
+}
+.hljs-number {
+  color: var(--hljs-number);
+}
+.hljs-title,
+.hljs-title.function_,
+.hljs-section {
+  color: var(--hljs-function);
+  font-weight: 600;
+}
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-class .hljs-title {
+  color: var(--hljs-builtin);
+}
+.hljs-variable,
+.hljs-attr,
+.hljs-params,
+.hljs-name {
+  color: var(--hljs-variable);
+}
+
+/* study 탭 수식 렌더링 (MathBlock.tsx, KaTeX) — 다크모드에서도 글자색이 테마를 따라가게 */
+.katex {
+  color: var(--foreground);
+}
+
+/* 비밀번호 게이트(PasswordGate.tsx)에서 틀린 비밀번호 입력 시 살짝 흔들리는 피드백 */
+@keyframes shake {
+  10%,
+  90% {
+    transform: translateX(-1px);
+  }
+  20%,
+  80% {
+    transform: translateX(2px);
+  }
+  30%,
+  50%,
+  70% {
+    transform: translateX(-4px);
+  }
+  40%,
+  60% {
+    transform: translateX(4px);
+  }
 }

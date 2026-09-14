@@ -1,0 +1,1056 @@
+[
+  {
+    "title": "Supervised ML",
+    "slug": "supervised-ml",
+    "intro": [],
+    "weeks": [
+      {
+        "title": "week1",
+        "slug": "supervised-ml-week1",
+        "intro": [],
+        "sections": [
+          {
+            "title": "**Supervised vs. Unsupervised Machine Learning**",
+            "slug": "supervised-ml-week1-supervised-vs-unsupervised-machine-learning",
+            "blocks": [
+              {
+                "type": "text",
+                "md": "Supervised Learning: “given right answers” \nex. regression, classifications(0/1 or 2이상)\nUnsupervised Learning: no labels→pattern or structures 찾기\nex. clustering(google news: 비슷한 articles 추천), anomaly detection(이상탐find unusual data points), dimersionality reduction(차원축소)"
+              }
+            ]
+          },
+          {
+            "title": "Regression models",
+            "slug": "supervised-ml-week1-regression-models",
+            "blocks": [
+              {
+                "type": "text",
+                "md": "training/test set\nlinear/nonlinear\ny=wx+b\n**cost function**(J): squared error cost function "
+              },
+              {
+                "type": "callout",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "md": "<span color=\"yellow_bg\">**gradient descent**</span>**: 경사하강법**\n**optimization algorithm that iteratively adjusts parameters in the direction that most steeply decreases a loss function, in order to find its minimum.**"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "md": "J(w,b)(cost function)를 최소화하고 싶음. \nα(alpha): learning rate→ controls how big of a step you take when updating the model's parameters, w and b\n좋은 learning rate 고르기"
+              },
+              {
+                "type": "math",
+                "tex": "w_j := w_j - \\alpha \\frac{\\partial}{\\partial w_j} J(w_1, w_2, \\dots, w_n)"
+              },
+              {
+                "type": "text",
+                "md": "- if α too small: baby step(min으로 가려면 오래걸림)\n- if α too large: huge step 너무 많이 감. might get even worse\nWhat do you think one step of gradient descent will do if you've already reached a minimum?→ w 동일하게 나\n“bash gradient descent”: on every step of gradient descent, we're looking at all of the training examples, instead of just a subset of the training data."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "week2",
+        "slug": "supervised-ml-week2",
+        "intro": [],
+        "sections": [
+          {
+            "title": "**Multiple linear regression**",
+            "slug": "supervised-ml-week2-multiple-linear-regression",
+            "blocks": [
+              {
+                "type": "text",
+                "md": "multivar-x변수가 많을때 \nvectorization(code runs much faster)→** np.dot(w,x)**로 구현 가능(w는 x의 계수 벡터)\ngradient descent)\nex. n=16\n**w**=(w1,w2,…,w16), **d**=(d1,d2,..,d16)\nwe want to compute wj=wj-0.1dj (0.1은 learning rate)\n벡토로 하면 다 동시에 run함"
+              },
+              {
+                "type": "math",
+                "tex": "θ_(t+1) = θ_t − α ∇L(θ_t)"
+              },
+              {
+                "type": "text",
+                "md": "\\*an alternative to gradient descent: normal equation(회귀분석에서만 쓰임→일반화x)"
+              }
+            ]
+          },
+          {
+            "title": "**Gradient descent in practice**",
+            "slug": "supervised-ml-week2-gradient-descent-in-practice",
+            "blocks": [
+              {
+                "type": "text",
+                "md": "1. feature scaling: diff range of values를 가진 변수들→ gradient descent를 더 잘 구하기 위함\n- mean normalization(정규화)\n- z-score normalization\n- feature scaling (-1≤x≤1정도로)딱 맞출 필요는 없음\n1. checking gradient descent for convergence\n일단 gradient descent가 잘 작동하는지 보기 위해→ minJ(**w**,b)(cost function)해야함→확인: x축을 #of iterations로 두고 J관찰→잘 작동하고 있다면 J has to decrease after every iteration"
+              },
+              {
+                "type": "callout",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "md": "learning curve"
+                  },
+                  {
+                    "type": "image",
+                    "file": "001-6199f241.png",
+                    "w": 1152,
+                    "h": 793,
+                    "caption": "gradient descent 학습 곡선(learning curve) 그래프 — objective: min J(w,b), iteration 횟수에 따라 J(w,b)가 감소하며 300~400회 근처에서 수렴"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "md": "300 iterations이후 converge하고 있음.\n1. choosing a good learning rate(alpha)"
+              },
+              {
+                "type": "callout",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "md": "One important trade-off is that if your learning rate is too small, then gradient descents can take a lot of iterations to converge."
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "md": "α lets try: 0.001, 0.01, 0.1, 1 등\n→ 그니까 너무 small하지 않으면서, learning curve가 계속 감소함수가 되도록!\n1. feature engineering\ncreating a new feature( ex. x3=x1x2)\n1. polynomial reg\n2차,3차 등등"
+              },
+              {
+                "type": "callout",
+                "blocks": [
+                  {
+                    "type": "image",
+                    "file": "002-ddd4aaac.png",
+                    "w": 831,
+                    "h": 311,
+                    "caption": "다항 회귀(polynomial regression)와 feature scaling 예시 — f(x)=w1x+w2x^2+b, f(x)=w1x+w2x^2+w3x^3+b 그래프 비교"
+                  },
+                  {
+                    "type": "text",
+                    "md": " if you create features that are these powers like the square of the original features, then** feature scaling** becomes increasingly important. "
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "md": "scikitlearn→ to implement linear reg"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "week3",
+        "slug": "supervised-ml-week3",
+        "intro": [],
+        "sections": [
+          {
+            "title": "Classification",
+            "slug": "supervised-ml-week3-classification",
+            "blocks": [
+              {
+                "type": "text",
+                "md": "logistic reg\nsigmoid function=logistic function(주로 이진분류에 쓰임)"
+              },
+              {
+                "type": "image",
+                "file": "003-ecaeb9a4.png",
+                "w": 460,
+                "h": 388,
+                "caption": "logistic regression 구조도 — z=w·x+b, g(z)=1/(1+e^-z), f(x)=g(w·x+b)=1/(1+e^-(w·x+b))"
+              },
+              {
+                "type": "text",
+                "md": "decision boundary "
+              },
+              {
+                "type": "image",
+                "file": "004-96bd8e36.png",
+                "w": 495,
+                "h": 50,
+                "caption": "decision boundary 정의 수식 — z=w·x+b=0"
+              }
+            ]
+          },
+          {
+            "title": "Cost function for logistic regression",
+            "slug": "supervised-ml-week3-cost-function-for-logistic-regression",
+            "blocks": [
+              {
+                "type": "text",
+                "md": "→ squared error cost function doesn’t work in log reg"
+              },
+              {
+                "type": "image",
+                "file": "005-2a84d591.png",
+                "w": 680,
+                "h": 171,
+                "caption": "logistic loss function 수식 — y=1일 때 -log(f), y=0일 때 -log(1-f)"
+              },
+              {
+                "type": "text",
+                "md": "we want to find w,b that minimizes cost J\nsimplified cost function:"
+              },
+              {
+                "type": "image",
+                "file": "006-8e37a993.png",
+                "w": 827,
+                "h": 72,
+                "caption": "logistic loss function을 하나의 식으로 합친 수식 — L=-y·log(f)-(1-y)·log(1-f)"
+              },
+              {
+                "type": "text",
+                "md": "cost↔ loss(single)"
+              }
+            ]
+          },
+          {
+            "title": "Gradient Descent in log reg",
+            "slug": "supervised-ml-week3-gradient-descent-in-log-reg",
+            "blocks": [
+              {
+                "type": "code",
+                "lang": "python",
+                "code": "from sklearn.linear_model import LogisticRegression\n\nlr_model = LogisticRegression()\nlr_model.fit(X, y)\n\ny_pred = lr_model.predict(X)\n\nprint(\"Prediction on training set:\", y_pred)\n\nprint(\"Accuracy on training set:\", lr_model.score(X, y))"
+              }
+            ]
+          },
+          {
+            "title": "The problem of overfitting",
+            "slug": "supervised-ml-week3-the-problem-of-overfitting",
+            "blocks": [
+              {
+                "type": "text",
+                "md": "overfit=high variance"
+              },
+              {
+                "type": "image",
+                "file": "007-0ce13f71.png",
+                "w": 865,
+                "h": 417,
+                "caption": "회귀(regression)에서 underfit/just right/overfit 예시 그래프 — 각각 high bias, generalization, high variance"
+              },
+              {
+                "type": "image",
+                "file": "008-74ef7480.png",
+                "w": 842,
+                "h": 397,
+                "caption": "분류(classification)에서 decision boundary 복잡도에 따른 underfit~overfit 예시 (선형, 2차, 고차 다항식 경계)"
+              },
+              {
+                "type": "text",
+                "md": "overfitting 어떻게 해결?\n1. training set 더 모으기\n2. see if you can use fewer features(변수 줄이기 x2,x3..)\n- but useful features may be lost(단점)\n3. reduce size of parameters (**”regularization”**)\n- 변수 줄이기 보다는(eliminate) 변수의 강도(?) 줄이기(prevents the features from having an overly large effect)"
+              }
+            ]
+          },
+          {
+            "title": "Regularization",
+            "slug": "supervised-ml-week3-regularization",
+            "blocks": [
+              {
+                "type": "text",
+                "md": "Regularization(정규화)은 모델의 가중치(coefficient)를 작게 줄여서 과적합(overfitting)을 완화하는 방법이다. 어떤 변수가 실제로 중요한지 미리 알 수 없기 때문에, 특정 변수만 골라내는 대신 모든 가중치 파라미터 $w_j$에 패널티를 부과한다(penalize all the $w_j$ parameters). 반면 절편 $b$는 이 패널티 대상에 포함하든 빼든 결과에 미치는 영향이 거의 없다(makes very little difference)."
+              },
+              {
+                "type": "math",
+                "tex": "\\min_{\\textcolor{#3b82f6}{\\vec{w},b}} J(\\vec{w},b) = \\min_{\\textcolor{#3b82f6}{\\vec{w},b}}\\left[\\overbrace{\\dfrac{1}{2m}\\sum_{i=1}^{m}\\left(f_{\\vec{w},b}(\\vec{x}^{(i)})-y^{(i)}\\right)^{2}}^{\\text{mean squared error}} + \\overbrace{\\textcolor{#f59e0b}{\\dfrac{\\lambda}{2m}}\\sum_{j=1}^{n}w_j^{2}}^{\\textcolor{#a855f7}{\\text{regularization term}}}\\right]"
+              },
+              {
+                "type": "text",
+                "md": "규제 정도를 조절하는 $\\lambda$(lambda)가 커질수록 가중치들은 점점 0에 가까워진다. 그러면 결국 상수항 $b$만 남게 되어 $f(x)$는 사실상 상수함수(constant function)에 가까워지고, 모델은 데이터의 패턴을 전혀 반영하지 못하는 과소적합(underfitting) 상태에 빠지게 된다."
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Advanced Learning Algorithms",
+    "slug": "advanced-learning-algorithms",
+    "intro": [],
+    "weeks": [
+      {
+        "title": "week1",
+        "slug": "advanced-learning-algorithms-week1",
+        "intro": [],
+        "sections": [
+          {
+            "title": "Neural Networks",
+            "slug": "advanced-learning-algorithms-week1-neural-networks",
+            "blocks": [
+              {
+                "type": "text",
+                "md": "→ 지도학습 중 하나\nex1. demand prediction"
+              },
+              {
+                "type": "image",
+                "file": "010-9052476b.png",
+                "w": 832,
+                "h": 401,
+                "caption": "수요 예측(demand prediction) 신경망 예시 — price/shipping cost/marketing/material 입력, hidden layer의 affordability/awareness/perceived quality activation, output layer에서 top seller 확률 출력"
+              },
+              {
+                "type": "text",
+                "md": "→ 이 예시는 hidden layer 1개\nOne way to think of this neural network is, just **logistic regression**. But as a version of logistic regression, they can learn its own features that makes it easier to make accurate predictions.\n(원래는 price, cost 등의 변수를 바로 사용했다면, 이런 변수를 더 better set of features(affordability, awareness, and perceived quality)를 써서 로지스틱 회귀 돌리는 느낌)\nfeatures를 내가 정하는게 아니라, 직접 정함( figure out all by itself what are the features it wants to use in this hidden layer)"
+              },
+              {
+                "type": "image",
+                "file": "011-5fee8d48.png",
+                "w": 880,
+                "h": 407,
+                "caption": "다중 은닉층(multiple hidden layers) 신경망 구조도 — input, 1st/2nd hidden layer/output layer 예시와 1st/2nd/3rd hidden layer 예시 비교"
+              },
+              {
+                "type": "text",
+                "md": "ex2. recognizing images"
+              },
+              {
+                "type": "image",
+                "file": "012-d7554897.png",
+                "w": 895,
+                "h": 415,
+                "caption": "얼굴 인식(face recognition) 신경망 예시 — 입력 이미지에서 계층별로 낮은 레벨(edge)에서 높은 레벨(얼굴 부분) feature를 학습하는 과정, source: Convolutional Deep Belief Networks 논문"
+              }
+            ]
+          },
+          {
+            "title": "Neural Network Model",
+            "slug": "advanced-learning-algorithms-week1-neural-network-model",
+            "blocks": [
+              {
+                "type": "text",
+                "md": "Neural network layer\n\\[1\\]=layer 1"
+              },
+              {
+                "type": "image",
+                "file": "013-5e23c554.png",
+                "w": 902,
+                "h": 412,
+                "caption": "neural network layer 구조 상세도 — layer1의 3개 unit 각각 a_j=g(w_j·x+b_j) 계산, sigmoid activation g(z)=1/(1+e^-z)"
+              },
+              {
+                "type": "image",
+                "file": "014-ef40b9c6.png",
+                "w": 871,
+                "h": 407,
+                "caption": "neural network layer 구조 상세도(layer2) — a1=g(w1·a[1]+b1)=0.84 계산 과정"
+              },
+              {
+                "type": "text",
+                "md": "more complex"
+              },
+              {
+                "type": "image",
+                "file": "015-a1d68cc5.png",
+                "w": 767,
+                "h": 410,
+                "caption": "복잡한 신경망(more complex neural network) 구조도 — layer0 input, layer1~3 hidden layers, layer4 output layer"
+              },
+              {
+                "type": "text",
+                "md": "4 layers(output layer포함해서 말함)"
+              },
+              {
+                "type": "image",
+                "file": "016-b40227b2.png",
+                "w": 875,
+                "h": 307,
+                "caption": "신경망 layer/unit 표기법(notation) 정리 — a_j^[l] 표기와 각 층의 activation 계산식 a_2^[3]=g(w_2^[3]·a^[2]+b_2^[3])"
+              },
+              {
+                "type": "image",
+                "file": "017-73e53e01.png",
+                "w": 878,
+                "h": 136,
+                "caption": "신경망 activation 계산 일반식 필기 설명 — a_j^[l]=g(w_j^[l]·a^[l-1]+b_j^[l]), sigmoid activation function, w/b는 layer l의 unit j 파라미터"
+              },
+              {
+                "type": "text",
+                "md": "- Forward propagation\nleft to rigth 방향으로 계산"
+              },
+              {
+                "type": "image",
+                "file": "018-f6a15f34.png",
+                "w": 885,
+                "h": 421,
+                "caption": "손글씨 숫자 인식(handwritten digit recognition) 신경망 예시 — forward propagation, 25/15/1 unit layer 구조, a^[3]≥0.5 여부로 숫자 1 여부 판별"
+              }
+            ]
+          },
+          {
+            "title": "**TensorFlow implementation**",
+            "slug": "advanced-learning-algorithms-week1-tensorflow-implementation",
+            "blocks": [
+              {
+                "type": "text",
+                "md": "→ Neural Network의 복잡한 계산과 학습을 대신 처리해주는 것"
+              },
+              {
+                "type": "image",
+                "file": "019-fbf86f5b.png",
+                "w": 800,
+                "h": 397,
+                "caption": "TensorFlow로 신경망 모델 구현 예시 코드 — Dense(units=3, activation='sigmoid') 등 layer 정의 및 a2≥0.5 판별 로직(if a2>=0.5: yhat=1 else yhat=0)"
+              },
+              {
+                "type": "text",
+                "md": "dense: 이전 층의 모든 뉴런(unit)과 연결된 뉴런들을 만드는 것"
+              },
+              {
+                "type": "code",
+                "lang": "python",
+                "code": "#tensorflow(와 일반 numpy의 차이)\n#Tensor ≈ NumPy array\nx=np.array([[200,17]]) #1x2 (2D)matrix 이렇게 써야함!!\nx=np.array([[200],[17]]) #2x1 matrix\nx=np.array([200,17]) #1D vector"
+              },
+              {
+                "type": "image",
+                "file": "020-f52dfed3.png",
+                "w": 805,
+                "h": 420,
+                "caption": "TensorFlow activation vector 예시 코드 — layer_1 Dense 출력 a1 = [0.2, 0.7, 0.3] (1x3 tf.Tensor)"
+              },
+              {
+                "type": "text",
+                "md": "*→ Tensor 여기서는 그냥 matrix라고 생각하면 됨.*\n- 그럼 neural network를 어떻게 만들까?"
+              },
+              {
+                "type": "image",
+                "file": "021-bccbfea0.png",
+                "w": 870,
+                "h": 425,
+                "caption": "TensorFlow로 신경망 아키텍처 구성 예시 — Sequential([layer_1, layer_2]), 학습 데이터 x,y(4x2 targets), model.compile/fit/predict"
+              },
+              {
+                "type": "text",
+                "md": "Dense(): 입력값들을 가중치로 계산해서 새로운 값들을 만들어내는 뉴런들을 만들어줘.\nSequential(): Dear TensorFlow, please create a neural network for me by sequentially string together these two layers that I just created.\n더 단순화된 버전)"
+              },
+              {
+                "type": "image",
+                "file": "022-f6d540f4.png",
+                "w": 447,
+                "h": 102,
+                "caption": "Sequential 모델 정의 코드 — model = Sequential([Dense(units=3, activation='sigmoid'), Dense(units=1, activation='sigmoid')])"
+              },
+              {
+                "type": "text",
+                "md": "`units` = 이 층에서 몇 개의 뉴런이 계산할 것인가\n`units=3` → 3개의 뉴런을 만들고, 각 뉴런은 같은 입력을 서로 다른 가중치로 계산해서 각각 숫자 하나를 출력한다.<br>`L1 params =  10025 , L2 params =  390 ,  L3 params =  16`\nparameter 수=(입력 개수x뉴런 개수)+뉴런 개수"
+              }
+            ]
+          },
+          {
+            "title": "**Neural network implementation in Python**",
+            "slug": "advanced-learning-algorithms-week1-neural-network-implementation-in-python",
+            "blocks": [
+              {
+                "type": "text",
+                "md": "*→ 실무에서는 보통 그냥 tensorflow, pytorch 라이브러리를 이용하지만, 이들이 정확하게 뭘하는지 배우기 위해 직접 구현해보는 시간..*"
+              },
+              {
+                "type": "image",
+                "file": "023-bfe6ec0e.png",
+                "w": 363,
+                "h": 162,
+                "caption": "Python으로 신경망 forward propagation 구현 시 layer1의 파라미터(w1,b1 / w2,b2 / w3,b3)와 a[1], layer2의 파라미터(w1,b1) 및 a[2] 계산 구조도"
+              },
+              {
+                "type": "code",
+                "lang": "python",
+                "code": "a[1]은 1번째 층(layer 1)의 3개 뉴런이 각각 출력한 값을 모아놓은 벡터"
+              },
+              {
+                "type": "image",
+                "file": "024-e7c7e309.png",
+                "w": 333,
+                "h": 152,
+                "caption": "Python으로 직접 구현한 신경망 forward propagation 코드 — a1[2]=g(w2_1·a1+b2_1), w2_1/b2_1 numpy array, z2_1=np.dot(w2_1,a1)+b2_1, a2_1=sigmoid(z2_1)"
+              },
+              {
+                "type": "text",
+                "md": "**General implementation of forward propagation**\n- forward prop in NumPy"
+              },
+              {
+                "type": "code",
+                "lang": "python",
+                "code": "def my_dense(a_in, W, b):\n    units = W.shape[1] #예시에서 units=3([1]은 두번째 차원(axis)인 column의미!\n    a_out = np.zeros(units) #[0,0,0]\n    for j in range(units):   #0,1,2            \n        w = W[:,j]       #모든 행의 jth 열(w_11,w12..)    / [행:열] [:}은 \"전체를 가져와라\"                         \n        z = np.dot(w, a_in) + b[j]         \n        a_out[j] = g(z)     #g는 activation function(대표적으로 sigmoid)          \n    return(a_out)\n    \n#W: Weight matrix, n features per unit, j units\n#b: bias vector, j units "
+              },
+              {
+                "type": "text",
+                "md": "1. TensorFlow로 작성"
+              },
+              {
+                "type": "code",
+                "lang": "python",
+                "code": "layer_1 = Dense(units=3, activation='sigmoid')\n\na_1 = layer_1(x)"
+              },
+              {
+                "type": "text",
+                "md": "1. 직접 계산"
+              },
+              {
+                "type": "code",
+                "lang": "python",
+                "code": "z1_3 = np.dot(w1_3, x) + b1_3\n\na1_3 = sigmoid(z1_3)"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "week2",
+        "slug": "advanced-learning-algorithms-week2",
+        "intro": [],
+        "sections": [
+          {
+            "title": "Neural Network training",
+            "slug": "advanced-learning-algorithms-week2-neural-network-training",
+            "blocks": [
+              {
+                "type": "image",
+                "file": "025-b6fa509e.png",
+                "w": 865,
+                "h": 432,
+                "caption": "TensorFlow로 신경망 학습시키는 전체 코드 흐름 — Sequential 모델 정의(25/15/1 units), BinaryCrossentropy loss로 compile, model.fit(X,Y,epochs=100), epochs는 gradient descent 스텝 수"
+              },
+              {
+                "type": "text",
+                "md": "1. ask TensorFlow to sequentially string together three layers of a neural network"
+              },
+              {
+                "type": "code",
+                "lang": "python",
+                "code": "import tensorflow as tf\nfrom tensorflow.keras import Sequential\nfrom tensorflow.keras.layers import Dense\n\nmodel = Sequential([\n    Dense(units=25, activation='sigmoid'),\n    Dense(units=15, activation='sigmoid'),\n    Dense(units=1, activation='sigmoid'),\n])"
+              },
+              {
+                "type": "text",
+                "md": "1. ask TensorFlow to compile the model(내가 사용하고싶은 loss function 정의하기)"
+              },
+              {
+                "type": "code",
+                "lang": "python",
+                "code": "from tensorflow.keras.losses import BinaryCrossentropy\n\nmodel.compile(loss=BinaryCrossentropy())\n#model.compile(loss=BinaryCrossentropy(from_logits=True)) 더 정확함."
+              },
+              {
+                "type": "text",
+                "md": "- binary cross-entropy loss function (cross-entropy function)\n1. call the fit function( tells TensorFlow to fit the model that you specified in step 1 using the loss of the cost function that you specified in step 2 to the dataset X, Y.)\n**tensorflow에서 compute derivatives for gradient descent using “back propagation”**"
+              },
+              {
+                "type": "code",
+                "lang": "python",
+                "code": "model.fit(X, Y, epochs=100) #100 iterations"
+              }
+            ]
+          },
+          {
+            "title": "**Activation Functions**",
+            "slug": "advanced-learning-algorithms-week2-activation-functions",
+            "blocks": [
+              {
+                "type": "text",
+                "md": "→ 지금까지는 sigmoid function(neural networks에 주로 쓰임)만 사용했음.."
+              },
+              {
+                "type": "image",
+                "file": "026-ace38eb9.png",
+                "w": 896,
+                "h": 413,
+                "caption": "activation function 종류 비교 — Linear(g(z)=z), Sigmoid(g(z)=1/(1+e^-z), 0<g(z)<1), ReLU(Rectified Linear Unit, g(z)=max(0,z)) 그래프"
+              },
+              {
+                "type": "text",
+                "md": "<span color=\"yellow_bg\">**How do we choose what activation functions to use??**</span>\n- output layer에서\n- binary classification: sigmoid function\n- reg: linear function (ex. house price예측)\n- nonnegative values 나와야하는  reg: ReLU function\n- hidden layer에서\n- neural networks에서 주로: ReLU \n<span color=\"yellow_bg\">**why?**</span><span color=\"yellow_bg\"> </span>\n1. ReLU function goes flat only in one part of the graph\n- flat인 부분이 많으면 gradient descent 계산할 때 느려짐\n2.  ReLU is a bit faster to compute because it just requires computing max of 0, z\nex)"
+              },
+              {
+                "type": "image",
+                "file": "027-401615a8.png",
+                "w": 515,
+                "h": 150,
+                "caption": "TensorFlow 코드에서 hidden layer는 relu, output layer는 sigmoid activation 사용하는 예시 (layer1, layer2, layer3)"
+              },
+              {
+                "type": "text",
+                "md": "<span color=\"yellow_bg\">**Why do we need activation functions?**</span>\n→ 즉 모든 layer에 그냥 linear function 쓰면, hidden layers 쓰는 이유가 없어짐."
+              },
+              {
+                "type": "image",
+                "file": "028-538d70e0.png",
+                "w": 867,
+                "h": 402,
+                "caption": "모든 layer가 linear activation(g(z)=z)일 때는 선형회귀와 동치, output만 sigmoid이면 로지스틱 회귀와 동치 — hidden layer에 linear activation을 쓰면 안 되는 이유 설명"
+              },
+              {
+                "type": "code",
+                "lang": "python",
+                "code": "import numpy as np\nimport matplotlib.pyplot as plt\nfrom matplotlib.gridspec import GridSpec\nplt.style.use('./deeplearning.mplstyle')\nimport tensorflow as tf\nfrom tensorflow.keras.models import Sequential\nfrom tensorflow.keras.layers import Dense, LeakyReLU\nfrom tensorflow.keras.activations import linear, relu, sigmoid\n%matplotlib widget\nfrom matplotlib.widgets import Slider\nfrom lab_utils_common import dlc\nfrom autils import plt_act_trio\nfrom lab_utils_relu import *\nimport warnings\nwarnings.simplefilter(action='ignore', category=UserWarning)"
+              }
+            ]
+          },
+          {
+            "title": "**Multiclass Classification**",
+            "slug": "advanced-learning-algorithms-week2-multiclass-classification",
+            "blocks": [
+              {
+                "type": "text",
+                "md": "→ Softmax reg algorithm\nmulticlass ex. classify whether patients may have any of three different diseases"
+              },
+              {
+                "type": "image",
+                "file": "029-83b39c7d.png",
+                "w": 515,
+                "h": 426,
+                "caption": "softmax regression 수식 (4개 클래스 예시) — z_j=w_j·x+b_j, a_j=e^{z_j}/(e^{z1}+e^{z2}+e^{z3}+e^{z4})=P(y=j|x)"
+              },
+              {
+                "type": "image",
+                "file": "030-3b724ad1.png",
+                "w": 875,
+                "h": 422,
+                "caption": "logistic regression과 softmax regression의 cost(cross-entropy loss) 비교 수식 — loss=-log(a_j) if y=j, J(w,b)=average loss"
+              },
+              {
+                "type": "text",
+                "md": "1. specify the model"
+              },
+              {
+                "type": "code",
+                "lang": "python",
+                "code": "import tensorflow as tf\nfrom tensorflow.keras import Sequential\nfrom tensorflow.keras.layers import Dense\n\n# model\nmodel = Sequential([\n\t\t#tf.keras.Input(shape=(400,)),\n    Dense(units=25, activation='relu'),\n    Dense(units=15, activation='relu'),\n    Dense(units=10, activation='linear')#softmax대신 (linear+from_logits=True)\n])"
+              },
+              {
+                "type": "text",
+                "md": "1. loss"
+              },
+              {
+                "type": "code",
+                "lang": "python",
+                "code": "from tensorflow.keras.losses import SparseCategoricalCrossentropy\n\nmodel.compile(\n    loss=SparseCategoricalCrossentropy(from_logits=True)\n)"
+              },
+              {
+                "type": "text",
+                "md": "1. fit model"
+              },
+              {
+                "type": "code",
+                "lang": "python",
+                "code": "# fit\nmodel.fit(X, Y, epochs=100)\n\n# predict\nlogits = model(X)\nf_x = tf.nn.softmax(logits)"
+              },
+              {
+                "type": "code",
+                "lang": "python",
+                "code": "def my_softmax(z):\n    ez = np.exp(z)              #element-wise exponenial\n    sm = ez/np.sum(ez)\n    return(sm)\n    "
+              },
+              {
+                "type": "code",
+                "lang": "python",
+                "code": "preferred_model = Sequential(\n    [ \n        Dense(25, activation = 'relu'),\n        Dense(15, activation = 'relu'),\n        Dense(4, activation = 'linear')   #<-- Note\n    ]\n)\npreferred_model.compile(\n    loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),  #손실함수 지정\n    optimizer=tf.keras.optimizers.Adam(0.001),\n)\n\npreferred_model.fit(\n    X_train,y_train,\n    epochs=10\n)"
+              },
+              {
+                "type": "text",
+                "md": "For multiclass classification, the recommended way to implement softmax regression is to set** from_logits=True** in the loss function, and also to define the model's output layer with a **'linear' activation**"
+              }
+            ]
+          },
+          {
+            "title": "**Additional Neural Network Concepts**",
+            "slug": "advanced-learning-algorithms-week2-additional-neural-network-concepts",
+            "blocks": [
+              {
+                "type": "text",
+                "md": "1. “**Adam Algorithm**”: 자동으로 learning rate 줄이고 늘리기\ngradient descent보다 neural networks 더 잘 optimize할 수 있는 algorithms(to minimize the cost function)\n→ computes adaptive learning rates for each parameter individually using estimates of both the first moment (the mean) and the second moment (the uncentered variance) of the gradients.\n→ more robust(안정적) to the exact choice of learning rate you pick.(initial learning rate에 덜 영향받음)"
+              },
+              {
+                "type": "code",
+                "lang": "python",
+                "code": "# model\nmodel = tf.keras.models.Sequential([\n    tf.keras.layers.Dense(units=25, activation='sigmoid'),\n    tf.keras.layers.Dense(units=10, activation='linear')\n])\n\n# compile\nmodel.compile(\n    optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),\n    loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)\n)\n\n# fit\nmodel.fit(X, Y, epochs=100)"
+              },
+              {
+                "type": "text",
+                "md": "1. Additional layer types\n→ 기존의 dense layer 말고.( every neuron in the layer gets its inputs all the activations from the previous layer)"
+              },
+              {
+                "type": "image",
+                "file": "031-bca12762.png",
+                "w": 853,
+                "h": 350,
+                "caption": "Dense layer 개념도 — 각 뉴런의 출력은 이전 층의 모든 activation 출력의 함수(Each neuron output is a function of all the activation outputs of the previous layer)"
+              },
+              {
+                "type": "text",
+                "md": "(1) Convolutional Layer(CNN)"
+              },
+              {
+                "type": "image",
+                "file": "032-6ddf2238.png",
+                "w": 877,
+                "h": 413,
+                "caption": "Convolutional layer 개념도 — 각 뉴런이 이전 층 출력의 일부만 보는 구조, 장점: 빠른 연산(faster computation)과 적은 학습 데이터로 과적합 방지(less prone to overfitting)"
+              },
+              {
+                "type": "text",
+                "md": "→ A neural network layer that extracts spatial features from input data using learnable sliding filters."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "week3",
+        "slug": "advanced-learning-algorithms-week3",
+        "intro": [],
+        "sections": [
+          {
+            "title": "Advice for applying ML- ML diagnostic",
+            "slug": "advanced-learning-algorithms-week3-advice-for-applying-ml-ml-diagnostic",
+            "blocks": [
+              {
+                "type": "text",
+                "md": "(1) Evaluating a model\n- training/ test set로 나누기 \n- training set/ cross validation set / test set으로 나누기"
+              },
+              {
+                "type": "image",
+                "file": "033-5c518f40.png",
+                "w": 866,
+                "h": 431,
+                "caption": "training/cross validation/test set 분할 예시 — size/price 데이터를 training 60%, cross validation 20%, test 20%로 나누는 표와 수식 (m_train=6, m_cv=2, m_test=2)"
+              },
+              {
+                "type": "image",
+                "file": "034-777fcdcd.png",
+                "w": 878,
+                "h": 423,
+                "caption": "model selection 과정 — 차수(d=1~10) 다항식 모델별 J_cv 비교 후 최적 모델(d=4) 선택, test set으로 일반화 오차(J_test) 추정"
+              },
+              {
+                "type": "text",
+                "md": "→ 한마디로: cv는 모델 선택 도우미, test는 최종 성능 평가용. so train set이용해서 파라미터 추정하고→cv데이터 이용해서 어떤 모델이 가장 좋은지 선택하고→ test셋 이용해서 진짜 성능 확인."
+              },
+              {
+                "type": "code",
+                "lang": "python",
+                "code": "# Get 60% of the dataset as the training set. Put the remaining 40% in temporary variables: x_ and y_.\nx_train, x_, y_train, y_ = train_test_split(x, y, test_size=0.40, random_state=1)\n\n# Split the 40% subset above into two: one half for cross validation and the other for the test set\nx_cv, x_test, y_cv, y_test = train_test_split(x_, y_, test_size=0.50, random_state=1)\n\n# Delete temporary variables\ndel x_, y_\n\nprint(f\"the shape of the training set (input) is: {x_train.shape}\")\nprint(f\"the shape of the training set (target) is: {y_train.shape}\\n\")\nprint(f\"the shape of the cross validation set (input) is: {x_cv.shape}\")\nprint(f\"the shape of the cross validation set (target) is: {y_cv.shape}\\n\")\nprint(f\"the shape of the test set (input) is: {x_test.shape}\")\nprint(f\"the shape of the test set (target) is: {y_test.shape}\")"
+              },
+              {
+                "type": "text",
+                "md": "<file src=\"file://%7B%22source%22%3A%22attachment%3A08789190-f87f-4621-a356-2283c0c02cd1%3AC2W3_Lab_01_Model_Evaluation_and_Selection-Copy1.ipynb%22%2C%22permissionRecord%22%3A%7B%22table%22%3A%22block%22%2C%22id%22%3A%223d43607f-0dba-8073-b6ef-c99bc4e4ed60%22%2C%22spaceId%22%3A%22bd43607f-0dba-81e2-85ee-00037d14f769%22%7D%7D\"></file>"
+              }
+            ]
+          },
+          {
+            "title": "**Bias and variance**",
+            "slug": "advanced-learning-algorithms-week3-bias-and-variance",
+            "blocks": [
+              {
+                "type": "image",
+                "file": "035-8b1a73f1.png",
+                "w": 867,
+                "h": 431,
+                "caption": "bias/variance 개념 — underfit(high bias, J_train/J_cv 모두 높음), just right, overfit(high variance, J_train 낮고 J_cv 높음) 그래프 비교"
+              },
+              {
+                "type": "text",
+                "md": "- Bias(편향): 모델이 너무 단순해서 데이터의 복잡한 패턴을 이해하지 X→ (train,test) 일관되게 잘못된 방향으로 예측\n- Variance(분산): 학습 데이터의 노이즈(자잘한 정보)까지 알아버려서→ 예측값이 민감하게 튀어버림\n→ Jtrain low+ Jcv low가 가장 이상적!"
+              },
+              {
+                "type": "image",
+                "file": "036-3a3e9680.png",
+                "w": 861,
+                "h": 425,
+                "caption": "bias/variance 진단표 — 차수(degree of polynomial)에 따른 J_train, J_cv 그래프와 high bias(J_train≈J_cv 높음)/high variance(J_cv≫J_train)/both 판단 기준"
+              },
+              {
+                "type": "text",
+                "md": "\\<Regularization(정규화)\\>- λ를 넣어서 모델의 복잡도를 제한하는 방법"
+              },
+              {
+                "type": "image",
+                "file": "037-410ca62c.png",
+                "w": 890,
+                "h": 441,
+                "caption": "regularization을 적용한 linear regression에서 λ 크기에 따른 bias/variance 변화 — large λ(underfit, w≈0), intermediate λ, small λ=0(overfit) 그래프 비교"
+              },
+              {
+                "type": "image",
+                "file": "038-6be46cdb.png",
+                "w": 882,
+                "h": 436,
+                "caption": "regularization parameter λ에 따른 J_train, J_cv 변화 그래프 — small λ에서 overfit(J_cv 높음), large λ에서 underfit(J_train 높음)"
+              },
+              {
+                "type": "text",
+                "md": "- baseline level of performance 지정하기(level of error)\n- human level of performance 등"
+              },
+              {
+                "type": "image",
+                "file": "039-2ee8d9a7.png",
+                "w": 881,
+                "h": 328,
+                "caption": "bias/variance 실제 예시 수치 — baseline performance 10.6%, training error 10.8~15.0%, cv error 14.8~15.5%로 high variance/high bias 판단"
+              },
+              {
+                "type": "text",
+                "md": "\\<learning curves\\>"
+              },
+              {
+                "type": "image",
+                "file": "040-8b6ab579.png",
+                "w": 881,
+                "h": 432,
+                "caption": "learning curves — training set 크기(m_train)에 따른 J_train, J_cv 변화 그래프와 다항식 회귀(f=w1x+w2x^2+b) fitting 예시들"
+              },
+              {
+                "type": "text",
+                "md": "→ 2차로 고정하면 train set 커질수록 오차 커짐"
+              },
+              {
+                "type": "image",
+                "file": "041-508f0353.png",
+                "w": 557,
+                "h": 310,
+                "caption": "high bias 상황의 learning curve — training set 크기가 커져도 J_train과 J_cv가 human level performance보다 높은 곳에서 수렴"
+              },
+              {
+                "type": "text",
+                "md": "→ bias가 크면(모델 단순), 데이터 수를 아무리 늘려도 성능이 좋아지지 않음!(데이터 더 찾는다고 시간 낭비 하지말자..)"
+              },
+              {
+                "type": "image",
+                "file": "042-22165b98.png",
+                "w": 591,
+                "h": 346,
+                "caption": "high variance 상황의 learning curve — J_cv는 human level performance보다 높고 J_train은 그보다 낮은 채로 간격이 벌어져 있는 그래프"
+              },
+              {
+                "type": "text",
+                "md": "→ 분산이 크면(모델 복잡), **데이터 수 늘리면 성능 좋아짐!**\n\\<그럼 여기까지 정리하자면\\>\nJtrain, Jcv를 확인하면 high bias인지, high variance인지 파악 가능\n→ 그 후에 뭘해야할지 알 수 있음."
+              },
+              {
+                "type": "image",
+                "file": "043-f1b49740.png",
+                "w": 842,
+                "h": 258,
+                "caption": "학습 알고리즘 디버깅(debugging) 예시 — regularized linear regression으로 주택 가격 예측 시 오차가 클 때 다음에 시도할 방법을 묻는 질문, J(w,b) regularization 수식 포함"
+              },
+              {
+                "type": "text",
+                "md": "1. <span color=\"pink_bg\">**if High Bias(모델단순)**</span>\n- try adding polynomial features(x\\^2,x1x2,..)\n- try getting additional features\n- try decreasing 람다\n1. <span color=\"pink_bg\">**if High Variance(모델복잡)**</span>\n- get more training examples\n- try smaller sets of features\n- try increasing 람다\n\\<in neural networks\\>\n→ 이 tradeoff 안 생기게 할 수 있음!\nlarge neural networks(more hidden layers or more hidden units per layer) are low bias machines!\nso, \n- high bias(training set에서 성능 안좋음)→ larger neural networks\n- high variance→more data→ 다시 training 반복\n근데 neural network가 너무 크면? 정규화 잘 하면 크게 문제되지 않음.."
+              },
+              {
+                "type": "image",
+                "file": "044-e7ec8808.png",
+                "w": 872,
+                "h": 427,
+                "caption": "신경망 regularization 코드 예시 — unregularized MNIST 모델과 kernel_regularizer=L2(0.01)을 적용한 regularized MNIST 모델 비교, J(W,B) regularization 수식"
+              }
+            ]
+          },
+          {
+            "title": "**Machine learning development process**",
+            "slug": "advanced-learning-algorithms-week3-machine-learning-development-process",
+            "blocks": [
+              {
+                "type": "text",
+                "md": "기본 반복 구조\n1. choose architecture(model, data,.._\n2. train model\n3. diagnostic(bias, variance, error analysis\n**Error analysis**"
+              },
+              {
+                "type": "image",
+                "file": "045-6d1e9a23.png",
+                "w": 832,
+                "h": 426,
+                "caption": "error analysis 예시 — cross validation set 500개 중 오분류된 100개를 수동으로 분석해 Pharma(21)/오탈자(misspelling)(3)/이상한 email routing(7)/피싱(18)/스팸 이미지(5) 등 카테고리별로 개수 집계"
+              },
+              {
+                "type": "text",
+                "md": "어디에 prioritize 할지 알 수 있음."
+              },
+              {
+                "type": "image",
+                "file": "046-f8d53056.png",
+                "w": 802,
+                "h": 402,
+                "caption": "스팸 분류기 성능 개선 방법 목록 — 데이터 추가 수집(Honeypot project), email routing/header 기반 feature 설계, email body feature 설계, 오탈자(w4tches, med1cine, m0rtgage) 탐지 알고리즘 설계"
+              },
+              {
+                "type": "text",
+                "md": "**Adding data**\nlet’s focus on adding more data of the types where **error analysis has indicated it might help(ex. pharma..)**\n**Data augmentation**\n: modifying an existing training example to create a new training example.(ex. 기존 “A”글씨 데이터를 돌리거나 늘리거나 등)\n**Data synthesis**\n: using artificial data inputs to create a new training example\n(computer vision분야에 많이 쓰임)\n**Transfer learning**\n: using data from a diff task"
+              },
+              {
+                "type": "image",
+                "file": "047-c86aec34.png",
+                "w": 871,
+                "h": 437,
+                "caption": "transfer learning 개념도 — 1000개 클래스·100만 장 이미지로 사전학습된 신경망에서 output layer만 재학습(option1)하거나 전체 파라미터 재학습(option2)해 10개 클래스 분류로 전이"
+              },
+              {
+                "type": "code",
+                "lang": "python",
+                "code": "이미 학습된 모델\n       ↓\n   내가 가진 데이터\n       ↓\n   조금 더 학습\n       ↓\n내 문제에 맞는 모델"
+              },
+              {
+                "type": "text",
+                "md": "**1단계 — Supervised Pretraining**\n수백만 개의 이미지 + 정답으로 모델 학습\n> \"이 이미지가 고양이인지 강아지인지 구분하는 기본적인 특징을 배움\"\n**2단계 — Transfer Learning**\n그 모델을 가져와서 새로운 문제에 사용\n> \"이제 동물 품종을 분류해보자.\"\n**3단계 — Fine-tuning**\n새로운 데이터로 모델의 가중치를 추가로 조정\n\\<full cycle of a ML project\\>\nex. speech recognition\n1. scope project: define\n2. collect data: audio, transcripts\n3. train model: training, error analysis, bias 반복\n4. (get more data)\n5. deploy in production(deploy, monitor, maintain)"
+              },
+              {
+                "type": "image",
+                "file": "048-6b77efdc.png",
+                "w": 851,
+                "h": 437,
+                "caption": "ML 모델 배포(deployment) 구조도 — inference server와 mobile app 간 API call(x, audio clip)/inference(y hat, text transcript) 흐름, 소프트웨어 엔지니어링 고려사항(scaling, logging, system monitoring, model updates)"
+              },
+              {
+                "type": "text",
+                "md": "→ MLOps\n1. (get more data)\n**Fairness, bias, and ethics도 주의하자..**"
+              },
+              {
+                "type": "image",
+                "file": "049-d807b4c9.png",
+                "w": 862,
+                "h": 435,
+                "caption": "책임있는 AI/배포 가이드라인 — 다양한 팀의 브레인스토밍, 산업 표준 문헌조사, 배포 전 감사(audit), 피해 완화 계획 및 배포 후 모니터링, Scope project→Collect data→Train model→Deploy in production 파이프라인"
+              },
+              {
+                "type": "text",
+                "md": "<file src=\"file://%7B%22source%22%3A%22attachment%3A8a610b4f-c0ed-4566-8f28-80fc846768ad%3AC2_W3_Assignment.ipynb%22%2C%22permissionRecord%22%3A%7B%22table%22%3A%22block%22%2C%22id%22%3A%223d53607f-0dba-80da-a5af-c8a1493517c0%22%2C%22spaceId%22%3A%22bd43607f-0dba-81e2-85ee-00037d14f769%22%7D%7D\"></file>"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "week4",
+        "slug": "advanced-learning-algorithms-week4",
+        "intro": [],
+        "sections": [
+          {
+            "title": "Decision tree model",
+            "slug": "advanced-learning-algorithms-week4-decision-tree-model",
+            "blocks": [
+              {
+                "type": "text",
+                "md": "결정 사항\n1. how to choose what feature to split on at each node?\n2. when do you stop splitting\n\\<measuring purity\\>\nEntropy: 현재 데이터가 얼마나 뒤섞여 있는가?”를 나타내는 값"
+              },
+              {
+                "type": "image",
+                "file": "050-53441cd5.png",
+                "w": 876,
+                "h": 377,
+                "caption": "entropy를 impurity 척도로 사용하는 예시 — H(p1) 그래프(p1=0.5일 때 최대 1), 고양이/강아지 6마리 중 고양이 비율 p1=3/6일 때 H(p1)=1"
+              },
+              {
+                "type": "text",
+                "md": "(y값이 entropy)"
+              },
+              {
+                "type": "image",
+                "file": "051-e3f66461.png",
+                "w": 527,
+                "h": 112,
+                "caption": "entropy 수식 — H(p1) = -p1·log2(p1) - p0·log2(p0) = -p1·log2(p1) - (1-p1)·log2(1-p1)"
+              },
+              {
+                "type": "image",
+                "file": "052-74ebb775.png",
+                "w": 862,
+                "h": 395,
+                "caption": "decision tree에서 split 기준(feature) 선택 예시 — Ear shape/Face Shape/Whiskers 세 feature로 나눴을 때 각 branch의 entropy(H)와 가중평균 계산으로 information gain(0.28/0.03/0.12) 비교"
+              },
+              {
+                "type": "text",
+                "md": "→ “information gain”(the** reduction in entropy **that you get in your tree resulting from making a split)→ 높을수록 좋겠지?\nWhy do we bother to compute reduction in entropy rather than just entropy ?\n→ the stopping criteria for deciding when to not bother to split any further is if **the reduction in entropy is too small**"
+              },
+              {
+                "type": "image",
+                "file": "053-72925c16.png",
+                "w": 536,
+                "h": 136,
+                "caption": "information gain 수식 — = H(p1^root) - (w^left · H(p1^left) + w^right · H(p1^right))"
+              },
+              {
+                "type": "image",
+                "file": "054-e67e996a.png",
+                "w": 822,
+                "h": 381,
+                "caption": "Decision Tree Learning 알고리즘 절차 — root node에서 시작, information gain이 최대인 feature로 분할, 정지 조건(노드가 100% 한 클래스, 최대 깊이 초과, information gain이 임계값 미만, 노드 예제 수가 임계값 미만)"
+              },
+              {
+                "type": "image",
+                "file": "055-c7ac43aa.png",
+                "w": 797,
+                "h": 365,
+                "caption": "one hot encoding 예시 — Ear shape(Pointy/Floppy/Oval)를 Pointy ears/Floppy ears/Oval ears 0/1 컬럼으로, Face shape·Whiskers 등 범주형 변수를 인코딩한 표"
+              },
+              {
+                "type": "text",
+                "md": ": if a categorical feature can take on k values, create k binary features(0 or 1)\nRandom forest algorithm"
+              },
+              {
+                "type": "image",
+                "file": "056-10c56745.png",
+                "w": 843,
+                "h": 407,
+                "caption": "bagged decision tree 샘플 생성 과정 — training set 크기 m에서 for b=1 to B까지 복원추출(sampling with replacement)로 새 데이터셋을 만들어 decision tree를 학습시키는 과정 예시"
+              },
+              {
+                "type": "text",
+                "md": "B: 64\\~128번\nXGBoost"
+              },
+              {
+                "type": "image",
+                "file": "057-3ba1b0dc.png",
+                "w": 845,
+                "h": 397,
+                "caption": "boosted trees(부스팅) 직관 설명 — for b=1 to B까지 복원추출하되 이전 트리들이 잘못 분류한 예제를 더 높은 확률로 뽑아 새 decision tree를 학습시키는 과정"
+              },
+              {
+                "type": "image",
+                "file": "058-b389d18f.png",
+                "w": 852,
+                "h": 357,
+                "caption": "XGBoost(eXtreme Gradient Boosting) 특징 요약 — boosted trees의 오픈소스 구현체, 빠르고 효율적, 기본 분할/정지 기준 내장, 과적합 방지용 정규화 내장, Kaggle 등 대회에서 강력한 성능"
+              },
+              {
+                "type": "code",
+                "lang": "python",
+                "code": "# Classification\nfrom xgboost import XGBClassifier\n\nmodel = XGBClassifier()\nmodel.fit(X_train, y_train)\n\ny_pred = model.predict(X_test)"
+              },
+              {
+                "type": "code",
+                "lang": "python",
+                "code": "# Regression\nfrom xgboost import XGBRegressor\n\nmodel = XGBRegressor()\nmodel.fit(X_train, y_train)\n\ny_pred = model.predict(X_test)"
+              },
+              {
+                "type": "text",
+                "md": "그럼 when do we use decision trees??"
+              },
+              {
+                "type": "image",
+                "file": "059-c86c43e1.png",
+                "w": 852,
+                "h": 422,
+                "caption": "Decision Trees vs Neural Networks 비교 — decision tree(tree ensemble)는 정형(tabular) 데이터에 강하고 빠르며 해석 가능, 신경망은 모든 데이터 유형에 강하고 느리지만 transfer learning과 다중 모델 결합에 유리"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Unsupervised Learning, Recommenders, Reinforcement Learning",
+    "slug": "unsupervised-learning-recommenders-reinforcement-learning",
+    "intro": [],
+    "weeks": [
+      {
+        "title": "week1",
+        "slug": "unsupervised-learning-recommenders-reinforcement-learning-week1",
+        "intro": [],
+        "sections": [
+          {
+            "title": "Unsupervised Learning",
+            "slug": "unsupervised-learning-recommenders-reinforcement-learning-week1-unsupervised-learning",
+            "blocks": []
+          }
+        ]
+      }
+    ]
+  }
+]
