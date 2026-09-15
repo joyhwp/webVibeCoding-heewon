@@ -4,6 +4,7 @@
 // (calendar 탭에서 "일정 있는 날짜에 점 표시"할 때 인덱스를 그대로 재사용할 수 있음)
 
 import type { TaskCategory } from "@/lib/taskCategory";
+import { readStore, writeStore, removeStore } from "@/lib/storage";
 
 /** DEAR Time(독서) 항목이 들고 다니는 책/페이지 기록. category가
  * "dearTime"인 ScheduleItem에만 붙는다 — books.ts가 이걸 모아 책별 독서
@@ -31,6 +32,15 @@ export type ScheduleItem = {
 
 const DAY_PREFIX = "schedule:";
 const INDEX_KEY = "schedule:index";
+// 키 이름은 스키마가 바뀌어도 고정한다 — 구조 변경은 키를 바꾸는 대신
+// SCHEMA_VERSION을 올리고 MIGRATIONS에 변환 함수를 추가해서 처리한다
+// (storage.ts 참고). 인덱스와 날짜별 항목 배열 둘 다 같은 버전을 쓴다.
+const SCHEMA_VERSION = 1;
+const MIGRATIONS: Array<(data: unknown) => unknown> = [
+  // v0 -> v1: 아직 실제 구조 변경 없음 — storage.ts 도입 이전엔 버전 정보 없이
+  // 배열을 그대로 저장했었다는 걸 "버전 0"으로 잡기 위한 자리.
+  (data) => data,
+];
 
 /** Date를 로컬 타임존 기준 "YYYY-MM-DD" 키로 변환 */
 export function toDateKey(date: Date = new Date()): string {
@@ -45,21 +55,12 @@ function isBrowser() {
 }
 
 function readIndex(): string[] {
-  if (!isBrowser()) return [];
-  try {
-    const raw = window.localStorage.getItem(INDEX_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
+  return readStore<string[]>(INDEX_KEY, SCHEMA_VERSION, MIGRATIONS, () => []);
 }
 
 function writeIndex(dateKeys: string[]) {
-  if (!isBrowser()) return;
   const unique = Array.from(new Set(dateKeys)).sort();
-  window.localStorage.setItem(INDEX_KEY, JSON.stringify(unique));
+  writeStore(INDEX_KEY, SCHEMA_VERSION, unique);
 }
 
 function addToIndex(dateKey: string) {
@@ -80,25 +81,22 @@ export function getIndexedDates(): string[] {
 }
 
 export function loadDay(dateKey: string): ScheduleItem[] {
-  if (!isBrowser()) return [];
-  try {
-    const raw = window.localStorage.getItem(DAY_PREFIX + dateKey);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
+  return readStore<ScheduleItem[]>(
+    DAY_PREFIX + dateKey,
+    SCHEMA_VERSION,
+    MIGRATIONS,
+    () => []
+  );
 }
 
 function saveDay(dateKey: string, items: ScheduleItem[]) {
   if (!isBrowser()) return;
   if (items.length === 0) {
-    window.localStorage.removeItem(DAY_PREFIX + dateKey);
+    removeStore(DAY_PREFIX + dateKey);
     removeFromIndex(dateKey);
     return;
   }
-  window.localStorage.setItem(DAY_PREFIX + dateKey, JSON.stringify(items));
+  writeStore(DAY_PREFIX + dateKey, SCHEMA_VERSION, items);
   addToIndex(dateKey);
 }
 

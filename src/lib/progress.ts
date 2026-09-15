@@ -6,6 +6,7 @@
 // 목록 간 이동에 별도 저장소가 필요 없다.
 
 import type { TaskCategory } from "@/lib/taskCategory";
+import { readStore, writeStore } from "@/lib/storage";
 
 export type ProgressItem = {
   id: string;
@@ -20,11 +21,18 @@ export type ProgressItem = {
   completedAt?: number;
 };
 
+// 키 이름은 스키마가 바뀌어도 고정한다 — 구조 변경은 키를 바꾸는 대신
+// SCHEMA_VERSION을 올리고 MIGRATIONS에 변환 함수를 추가해서 처리한다
+// (storage.ts 참고). 그래야 이미 저장된 사용자 데이터가 배포/업데이트 후에도
+// 그대로 유지된다.
 const STORAGE_KEY = "progress:v1";
-
-function isBrowser() {
-  return typeof window !== "undefined";
-}
+const SCHEMA_VERSION = 1;
+const MIGRATIONS: Array<(data: unknown) => unknown> = [
+  // v0 -> v1: 아직 실제 구조 변경 없음 — storage.ts 도입 이전엔 버전 정보 없이
+  // 배열을 그대로 저장했었다는 걸 "버전 0"으로 잡기 위한 자리.
+  // 다음에 필드가 추가/이름이 바뀌면 여기 이어서 migrations[1]을 추가할 것.
+  (data) => data,
+];
 
 function clampPercent(n: number): number {
   if (Number.isNaN(n)) return 0;
@@ -32,20 +40,16 @@ function clampPercent(n: number): number {
 }
 
 function loadAll(): ProgressItem[] {
-  if (!isBrowser()) return [];
-  try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
+  return readStore<ProgressItem[]>(
+    STORAGE_KEY,
+    SCHEMA_VERSION,
+    MIGRATIONS,
+    () => []
+  );
 }
 
 function saveAll(items: ProgressItem[]) {
-  if (!isBrowser()) return;
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+  writeStore(STORAGE_KEY, SCHEMA_VERSION, items);
 }
 
 /** In Progress 위젯 목록 — 최근에 업데이트한 순 */

@@ -2,29 +2,22 @@
 // 한해서만 "그날은 제외"시키기 위한 저장소. (휴강/수정으로 인한 이동 시 사용)
 // 자연어 명령 파서(commandParser.ts) + QuickAddBar에서 사용.
 
+import { readStore, writeStore } from "@/lib/storage";
+
+// 키 이름은 스키마가 바뀌어도 고정한다 — 구조 변경은 키를 바꾸는 대신
+// SCHEMA_VERSION을 올리고 MIGRATIONS에 변환 함수를 추가해서 처리한다.
 const STORAGE_KEY = "classOverrides:v1";
+const SCHEMA_VERSION = 1;
+const MIGRATIONS: Array<(data: unknown) => unknown> = [(data) => data];
 
 type Override = { dateKey: string; classId: string };
 
-function isBrowser() {
-  return typeof window !== "undefined";
-}
-
 function readAll(): Override[] {
-  if (!isBrowser()) return [];
-  try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
+  return readStore<Override[]>(STORAGE_KEY, SCHEMA_VERSION, MIGRATIONS, () => []);
 }
 
 function writeAll(list: Override[]) {
-  if (!isBrowser()) return;
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+  writeStore(STORAGE_KEY, SCHEMA_VERSION, list);
 }
 
 export function isClassCancelled(dateKey: string, classId: string): boolean {

@@ -5,6 +5,7 @@
 import { removeItem, restoreItem, type ScheduleItem } from "@/lib/schedule";
 import { cancelClassForDate, uncancelClassForDate } from "@/lib/classOverrides";
 import type { TaskCategory } from "@/lib/taskCategory";
+import { readStore, writeStore } from "@/lib/storage";
 
 export type TrashEntry =
   | {
@@ -27,28 +28,19 @@ export type TrashEntry =
       category: TaskCategory;
     };
 
+// 키 이름은 스키마가 바뀌어도 고정한다 — 구조 변경은 키를 바꾸는 대신
+// SCHEMA_VERSION을 올리고 MIGRATIONS에 변환 함수를 추가해서 처리한다.
 const STORAGE_KEY = "trash:v1";
+const SCHEMA_VERSION = 1;
+const MIGRATIONS: Array<(data: unknown) => unknown> = [(data) => data];
 const RETENTION_MS = 30 * 24 * 60 * 60 * 1000; // 30일
 
-function isBrowser() {
-  return typeof window !== "undefined";
-}
-
 function readAllRaw(): TrashEntry[] {
-  if (!isBrowser()) return [];
-  try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
+  return readStore<TrashEntry[]>(STORAGE_KEY, SCHEMA_VERSION, MIGRATIONS, () => []);
 }
 
 function writeAll(entries: TrashEntry[]) {
-  if (!isBrowser()) return;
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+  writeStore(STORAGE_KEY, SCHEMA_VERSION, entries);
 }
 
 /** 30일 지난 항목은 조회 시점에 걸러내고 완전히 지운 뒤 반환(최신순) */
