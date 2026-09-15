@@ -9,7 +9,7 @@ import {
   TASK_CATEGORIES,
   type TaskCategory,
 } from "@/lib/taskCategory";
-import { getLastPageForBook } from "@/lib/books";
+import { getLastPageForBook, recordBookProgress, registerBook } from "@/lib/books";
 import { getTotalPages, setTotalPages } from "@/lib/bookMeta";
 import CategoryIcon from "@/components/today/CategoryIcon";
 
@@ -74,6 +74,7 @@ export default function ProgressCard({
   const [draftTitle, setDraftTitle] = useState(item.title);
   const [draftCategory, setDraftCategory] = useState<TaskCategory>(item.category);
   const [draftTotalPages, setDraftTotalPages] = useState("");
+  const [draftCurrentPage, setDraftCurrentPage] = useState("");
 
   // DEAR Time 책과 연결된 카드는 진행률을 직접 못 건드리고, Books 탭 데이터
   // (가장 최근 읽은 페이지 / 전체 쪽수)로 자동 계산한다.
@@ -110,6 +111,13 @@ export default function ProgressCard({
     // 수동 값이 뜬금없이 되살아나지 않는다.
     setDraftPercent(displayPercent);
     setDraftTotalPages(totalPages ? String(totalPages) : "");
+    // 이미 독서 기록이 있으면 최신 값으로 채워서(덮어쓰기 방지) 이어서
+    // 수정할 수 있게 하고, 기록이 없으면 비워둔다(Total pages와 같은 패턴).
+    setDraftCurrentPage(
+      item.bookTitle
+        ? String(getLastPageForBook(item.bookTitle) ?? "")
+        : ""
+    );
     onToggleEdit(item.id);
   }
 
@@ -118,6 +126,7 @@ export default function ProgressCard({
     if (value === "dearTime") {
       const bt = draftTitle.trim() || item.bookTitle || "";
       setDraftTotalPages(bt ? String(getTotalPages(bt) ?? "") : "");
+      setDraftCurrentPage(bt ? String(getLastPageForBook(bt) ?? "") : "");
     }
   }
 
@@ -131,10 +140,24 @@ export default function ProgressCard({
       bookTitle: nextBookTitle,
     });
     if (nextBookTitle) {
+      // 독서 기록이 아직 없어도 Books 탭에 바로(빈 카드로) 뜨도록 등록해둔다.
+      registerBook(nextBookTitle);
       const n = Number(draftTotalPages);
       if (n > 0) {
         setTotalPages(nextBookTitle, n);
         setTotalPagesState(n);
+      }
+      // "현재까지 읽은 페이지"를 실제로 바꿨을 때만 오늘 날짜로 독서 기록을
+      // 만들거나 갱신한다 — 안 건드리고 그냥 저장만 했는데 매번 새 기록이
+      // 쌓이는 걸 막는다.
+      const priorPage = getLastPageForBook(nextBookTitle) ?? -1;
+      const currentPage = Number(draftCurrentPage);
+      if (
+        draftCurrentPage.trim() !== "" &&
+        Number.isFinite(currentPage) &&
+        currentPage !== priorPage
+      ) {
+        recordBookProgress(nextBookTitle, currentPage);
       }
     } else {
       onSetPercent(item.id, draftPercent);
@@ -247,15 +270,26 @@ export default function ProgressCard({
           </div>
 
           {draftIsBookItem ? (
-            <input
-              type="number"
-              min={1}
-              value={draftTotalPages}
-              onChange={(e) => setDraftTotalPages(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSaveEdit()}
-              placeholder="Total pages"
-              className="w-full rounded-full border-0 bg-foreground/5 px-3 py-1.5 text-center text-xs outline-none focus:ring-2 focus:ring-blue-500/30"
-            />
+            <div className="flex flex-col gap-2">
+              <input
+                type="number"
+                min={1}
+                value={draftTotalPages}
+                onChange={(e) => setDraftTotalPages(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleSaveEdit()}
+                placeholder="Total pages"
+                className="w-full rounded-full border-0 bg-foreground/5 px-3 py-1.5 text-center text-xs outline-none focus:ring-2 focus:ring-blue-500/30"
+              />
+              <input
+                type="number"
+                min={0}
+                value={draftCurrentPage}
+                onChange={(e) => setDraftCurrentPage(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleSaveEdit()}
+                placeholder="Current page"
+                className="w-full rounded-full border-0 bg-foreground/5 px-3 py-1.5 text-center text-xs outline-none focus:ring-2 focus:ring-blue-500/30"
+              />
+            </div>
           ) : (
             <div className="flex items-center gap-2">
               <input

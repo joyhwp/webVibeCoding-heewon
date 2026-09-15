@@ -17,6 +17,12 @@ function formatDateLabel(dateKey: string): string {
   }).format(new Date(y, m - 1, d));
 }
 
+function lastReadLabel(book: BookSummary): string {
+  return book.lastReadDateKey
+    ? ` · last read ${formatDateLabel(book.lastReadDateKey)}`
+    : "";
+}
+
 function pageRangeLabel(startPage: number, endPage?: number): string {
   return endPage != null ? `${startPage}~${endPage}쪽` : `${startPage}쪽부터`;
 }
@@ -59,11 +65,18 @@ export default function BookDetail({
             <p className="text-xs text-foreground/50">
               {target
                 ? `${book.totalPages} of ${target} pages`
-                : `${book.totalPages}쪽까지 읽음`}{" "}
-              · last read {formatDateLabel(book.lastReadDateKey)}
+                : `${book.totalPages}쪽까지 읽음`}
+              {lastReadLabel(book)}
             </p>
           </div>
         </div>
+
+        {book.history.length === 0 && (
+          <p className="text-sm text-foreground/50">
+            No reading sessions logged yet — add one from the Home tab with
+            category &quot;DEAR Time&quot;.
+          </p>
+        )}
 
         <div className="flex flex-col divide-y divide-foreground/10">
           {book.history.map((entry, i) => (

@@ -16,6 +16,12 @@ function formatDateLabel(dateKey: string): string {
   }).format(new Date(y, m - 1, d));
 }
 
+function lastReadLabel(book: BookSummary): string {
+  return book.lastReadDateKey
+    ? `Last read ${formatDateLabel(book.lastReadDateKey)}`
+    : "Not started yet";
+}
+
 export default function CurrentlyReadingCard({
   book,
   onSeeAll,
@@ -69,7 +75,7 @@ export default function CurrentlyReadingCard({
                 {book.title}
               </h2>
               <p className="mt-1 text-xs text-foreground/50">
-                Last read {formatDateLabel(book.lastReadDateKey)}
+                {lastReadLabel(book)}
               </p>
             </div>
           </div>

@@ -10,7 +10,12 @@ import {
 } from "@/lib/taskCategory";
 import { toMinutes, minutesToLabel } from "@/lib/time";
 import type { BookProgress } from "@/lib/schedule";
-import { formatBookTask, getKnownBookTitles, getLastPageForBook } from "@/lib/books";
+import {
+  formatBookTask,
+  getKnownBookTitles,
+  getLastPageForBook,
+  registerBook,
+} from "@/lib/books";
 
 // 30분 단위 소요 시간 선택지(시간 단위 값)
 const DURATION_OPTIONS = [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 5, 6, 8];
@@ -91,6 +96,9 @@ export default function AddTaskForm({ todayKey, onAdd }: AddTaskFormProps) {
       const end = endPage ? Number(endPage) : undefined;
       if (endPage && Number.isNaN(end)) return;
       const book = { title, startPage: start, endPage: end };
+      // In Progress에서 DEAR Time 카드를 새로 만들 때와 같은 책 등록소를
+      // 공유해서, 어느 쪽으로 먼저 추가하든 Books 탭에 항상 같은 카드로 뜨게 한다.
+      registerBook(title);
       onAdd(date, startTime, endTime, formatBookTask(book), category, book);
       setBookTitle("");
       setStartPage("");

@@ -166,6 +166,22 @@ export function toggleComplete(dateKey: string, id: string): ScheduleItem[] {
   return next;
 }
 
+/** DEAR Time 항목의 책/페이지 기록(및 표시용 task 문구)만 바꿔치기한다.
+ * books.ts의 recordBookProgress가, 오늘치 기록이 이미 있을 때 새로 만들지
+ * 않고 그 기록을 그대로 갱신하는 데 쓴다. */
+export function updateItemBook(
+  dateKey: string,
+  id: string,
+  task: string,
+  book: BookProgress
+): ScheduleItem[] {
+  const next = loadDay(dateKey).map((item) =>
+    item.id === id ? { ...item, task, book } : item
+  );
+  saveDay(dateKey, next);
+  return next;
+}
+
 /**
  * 할일을 다른 날짜 및/또는 다른 시간으로 옮긴다("미루기").
  * fromDateKey와 toDateKey가 같으면 같은 날 안에서 시간만 바뀐다.

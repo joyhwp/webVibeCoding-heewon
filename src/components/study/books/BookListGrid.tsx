@@ -16,6 +16,12 @@ function formatDateLabel(dateKey: string): string {
   }).format(new Date(y, m - 1, d));
 }
 
+function lastReadLabel(book: BookSummary): string {
+  return book.lastReadDateKey
+    ? `last read ${formatDateLabel(book.lastReadDateKey)}`
+    : "not started yet";
+}
+
 export default function BookListGrid({
   summaries,
   onSelect,
@@ -76,7 +82,7 @@ export default function BookListGrid({
                     : `${book.totalPages}쪽까지 읽음`}
                 </p>
                 <p className="mt-0.5 text-xs text-foreground/40">
-                  last read {formatDateLabel(book.lastReadDateKey)}
+                  {lastReadLabel(book)}
                 </p>
               </div>
             </button>

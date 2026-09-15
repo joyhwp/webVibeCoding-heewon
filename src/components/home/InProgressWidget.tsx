@@ -6,7 +6,7 @@ import GlassCard from "@/components/ui/GlassCard";
 import GlassButton from "@/components/ui/GlassButton";
 import ProgressCard from "@/components/home/ProgressCard";
 import { useProgress } from "@/hooks/useProgress";
-import { getKnownBookTitles } from "@/lib/books";
+import { getKnownBookTitles, registerBook } from "@/lib/books";
 import {
   ACCENT_CHIP_SELECTED,
   CATEGORY_STYLES,
@@ -42,7 +42,9 @@ export default function InProgressWidget() {
     // 여부와 무관하게 링크해야, 나중에 Add Task로 페이지를 기록했을 때
     // (제목이 똑같으면) 곧바로 연결된다. 수동 퍼센트는 절대 받지 않는다
     // (ProgressCard의 displayPercent도 book 항목은 computedPercent만 씀).
+    // 독서 기록이 아직 없어도 Books 탭에 바로(빈 카드로) 뜨도록 등록해둔다.
     const bookTitle = isDearTime ? trimmed : undefined;
+    if (bookTitle) registerBook(bookTitle);
     add(trimmed, isDearTime ? 0 : Number(percent) || 0, category, bookTitle);
     setTitle("");
     setInitialPercent("0");
