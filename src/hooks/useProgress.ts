@@ -9,6 +9,7 @@ import {
   removeProgressItem,
   restoreItem,
   setProgressPercent,
+  updateProgressItem,
   type ProgressItem,
 } from "@/lib/progress";
 import type { TaskCategory } from "@/lib/taskCategory";
@@ -52,6 +53,17 @@ export function useProgress() {
     [bump]
   );
 
+  const update = useCallback(
+    (
+      id: string,
+      updates: { title?: string; category?: TaskCategory; bookTitle?: string }
+    ) => {
+      updateProgressItem(id, updates);
+      bump();
+    },
+    [bump]
+  );
+
   const complete = useCallback(
     (id: string) => {
       completeItem(id);
@@ -82,6 +94,7 @@ export function useProgress() {
     archivedItems,
     add,
     setPercent,
+    update,
     complete,
     restore,
     remove,

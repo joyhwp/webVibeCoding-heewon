@@ -107,6 +107,20 @@ export function completeItem(id: string): ProgressItem[] {
   return setProgressPercent(id, 100);
 }
 
+/** 카드 인라인 수정 — 이름/카테고리(+연결된 책 제목)를 바꾼다. bookTitle을
+ * undefined로 넘기면 책 연결이 끊어져서 수동 슬라이더로 전환된다. */
+export function updateProgressItem(
+  id: string,
+  updates: { title?: string; category?: TaskCategory; bookTitle?: string }
+): ProgressItem[] {
+  const now = Date.now();
+  const next = loadAll().map((i) =>
+    i.id === id ? { ...i, ...updates, updatedAt: now } : i
+  );
+  saveAll(next);
+  return next;
+}
+
 /** 아카이브에서 "진행중으로 되돌리기" — completedAt만 지운다 (진행률은 그대로 둬서,
  * 실수로 완료 처리한 경우 원래 값을 잃지 않는다) */
 export function restoreItem(id: string): ProgressItem[] {

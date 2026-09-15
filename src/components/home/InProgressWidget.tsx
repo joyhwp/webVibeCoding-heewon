@@ -19,13 +19,15 @@ function cx(...classes: Array<string | false | undefined>) {
 }
 
 export default function InProgressWidget() {
-  const { hasMounted, activeItems, add, setPercent, complete } = useProgress();
+  const { hasMounted, activeItems, add, setPercent, update, complete } =
+    useProgress();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formOpen, setFormOpen] = useState(false);
 
   const [title, setTitle] = useState("");
   const [percent, setInitialPercent] = useState("0");
   const [category, setCategory] = useState<TaskCategory>("project");
+  const isDearTime = category === "dearTime";
 
   if (!hasMounted) return null;
 
@@ -35,10 +37,13 @@ export default function InProgressWidget() {
     e.preventDefault();
     const trimmed = title.trim();
     if (!trimmed) return;
-    const bookTitle = knownBookTitles.find(
-      (t) => t.toLowerCase() === trimmed.toLowerCase()
-    );
-    add(trimmed, Number(percent) || 0, category, bookTitle);
+    // DEAR Time 카드는 항상 책 제목으로 링크해서 Books 탭(schedule.ts 기반
+    // 독서 기록)과 같은 데이터로 자동계산되게 한다 — 기존에 등록된 책인지
+    // 여부와 무관하게 링크해야, 나중에 Add Task로 페이지를 기록했을 때
+    // (제목이 똑같으면) 곧바로 연결된다. 수동 퍼센트는 절대 받지 않는다
+    // (ProgressCard의 displayPercent도 book 항목은 computedPercent만 씀).
+    const bookTitle = isDearTime ? trimmed : undefined;
+    add(trimmed, isDearTime ? 0 : Number(percent) || 0, category, bookTitle);
     setTitle("");
     setInitialPercent("0");
     setCategory("project");
@@ -110,16 +115,26 @@ export default function InProgressWidget() {
                   <option key={t} value={t} />
                 ))}
               </datalist>
-              <input
-                type="number"
-                min={0}
-                max={100}
-                value={percent}
-                onChange={(e) => setInitialPercent(e.target.value)}
-                placeholder="%"
-                className="glass-panel w-full rounded-xl border-0 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500/30 dark:focus:ring-blue-400/30 sm:w-20"
-              />
+              {!isDearTime && (
+                <input
+                  type="number"
+                  min={0}
+                  max={100}
+                  value={percent}
+                  onChange={(e) => setInitialPercent(e.target.value)}
+                  placeholder="%"
+                  className="glass-panel w-full rounded-xl border-0 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500/30 dark:focus:ring-blue-400/30 sm:w-20"
+                />
+              )}
             </div>
+
+            {isDearTime && (
+              <p className="text-xs text-foreground/45">
+                Percent is calculated automatically from your DEAR Time
+                reading log (Add Task below) — set total pages on the card
+                once you&apos;ve added one.
+              </p>
+            )}
 
             <div className="flex flex-wrap gap-2">
               {TASK_CATEGORIES.map(({ value, label }) => {
@@ -171,6 +186,7 @@ export default function InProgressWidget() {
                   setEditingId((cur) => (cur === id ? null : id))
                 }
                 onSetPercent={setPercent}
+                onUpdate={update}
                 onComplete={complete}
               />
             ))}
