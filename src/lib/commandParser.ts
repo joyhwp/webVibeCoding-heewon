@@ -184,12 +184,15 @@ type TimeRangeMatch = {
 };
 
 /**
- * "1시부터 4시까지", "오후 1시부터 4시까지", "13:00부터 15:00까지" 같은
- * 시간 범위를 먼저 찾고, 없으면 "오후 3시" 같은 단일 시각을 찾는다.
+ * "1시부터 4시까지", "1시부터 4시"(까지 생략), "오후 1시~4시"(물결표),
+ * "13:00부터 15:00까지" 같은 시간 범위를 먼저 찾고, 없으면 "오후 3시" 같은
+ * 단일 시각을 찾는다. "11일부터 12일까지" 같은 날짜 범위와는 숫자 뒤에
+ * "일"이 오는지 "시"가 오는지로 구분되므로(extractDateRange가 먼저 그
+ * 케이스를 가져간다) 여기서는 별도 처리가 필요 없다.
  */
 function extractTime(text: string): TimeRangeMatch | null {
   const range = text.match(
-    /(오전|오후)?\s*(\d{1,2})(?::([0-5]\d))?\s*시?\s*부터\s*(오전|오후)?\s*(\d{1,2})(?::([0-5]\d))?\s*시?\s*까지/
+    /(오전|오후)?\s*(\d{1,2})(?::([0-5]\d))?\s*시?\s*(?:부터|~)\s*(오전|오후)?\s*(\d{1,2})(?::([0-5]\d))?\s*시?\s*(?:까지)?/
   );
   if (range) {
     const startHour = hourWithMeridiem(Number(range[2]), range[1]);
@@ -209,7 +212,12 @@ function extractTime(text: string): TimeRangeMatch | null {
     return { startTime: `${h}:${hhmm[2]}`, matchedText: hhmm[0] };
   }
 
-  const korean = text.match(/(오전|오후)?\s*(\d{1,2})\s*시\s*(\d{1,2})?\s*분?/);
+  // "3시부터 팀플"처럼 끝 시각 없이 "부터"만 있는 애매한 경우 — 끝 시각을
+  // 추측하지 않고 시작 시각만 반환하되, "부터"까지 matchedText에 포함시켜
+  // 제목 정리 시 함께 걷어내지도록 한다.
+  const korean = text.match(
+    /(오전|오후)?\s*(\d{1,2})\s*시\s*(\d{1,2})?\s*분?\s*(?:부터)?/
+  );
   if (korean) {
     const hour = hourWithMeridiem(Number(korean[2]), korean[1]);
     const minute = korean[3] ? Number(korean[3]) : 0;
