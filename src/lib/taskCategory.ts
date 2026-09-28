@@ -122,8 +122,8 @@ export const CATEGORY_ACCENT: Record<TaskCategory, CategoryAccent> = {
 };
 
 export const CLASS_ACCENT: CategoryAccent = {
-  solid: "var(--cat-class)",
-  soft: "var(--cat-class-soft)",
+  solid: "var(--accent)",
+  soft: "var(--accent-soft)",
 };
 
 // 폼에서 선택된 카테고리 칩의 공통 강조 스타일 (사이트 포인트 컬러: 세이지 그린)

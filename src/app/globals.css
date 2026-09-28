@@ -42,10 +42,9 @@
   /* Today 탭 카테고리 accent — 라이트. dataviz 스킬 카테고리 팔레트에서
      가져온 값(school=orange, club=aqua, tutoring=yellow, exam=magenta,
      assignment=green, dearTime=violet, study=red). class(반복 수업)는
-     사이트 전역 accent인 blue, personal은 가장 중립적인 카테고리라
-     무채색(slate)을 쓴다. -soft는 카드 배경 틴트용 저채도 버전. */
-  --cat-class: #2a78d6;
-  --cat-class-soft: rgba(42, 120, 214, 0.12);
+     --accent(사이트 전역 포인트 컬러)를 그대로 쓴다(taskCategory.ts의
+     CLASS_ACCENT), personal은 가장 중립적인 카테고리라 무채색(slate)을
+     쓴다. -soft는 카드 배경 틴트용 저채도 버전. */
   --cat-personal: #64748b;
   --cat-personal-soft: rgba(100, 116, 139, 0.12);
   --cat-school: #eb6834;
@@ -132,8 +131,6 @@
     --hljs-variable: #e06c75;
 
     /* Today 탭 카테고리 accent — 다크 */
-    --cat-class: #3987e5;
-    --cat-class-soft: rgba(57, 135, 229, 0.16);
     --cat-personal: #94a3b8;
     --cat-personal-soft: rgba(148, 163, 184, 0.14);
     --cat-school: #d95926;
@@ -184,8 +181,6 @@
   --hljs-builtin: #e5c07b;
   --hljs-variable: #e06c75;
 
-  --cat-class: #3987e5;
-  --cat-class-soft: rgba(57, 135, 229, 0.16);
   --cat-personal: #94a3b8;
   --cat-personal-soft: rgba(148, 163, 184, 0.14);
   --cat-school: #d95926;
@@ -240,8 +235,6 @@
   --hljs-builtin: #c18401;
   --hljs-variable: #e45649;
 
-  --cat-class: #2a78d6;
-  --cat-class-soft: rgba(42, 120, 214, 0.12);
   --cat-personal: #64748b;
   --cat-personal-soft: rgba(100, 116, 139, 0.12);
   --cat-school: #eb6834;
@@ -290,8 +283,6 @@
   --hljs-builtin: #e5c07b;
   --hljs-variable: #e06c75;
 
-  --cat-class: #3987e5;
-  --cat-class-soft: rgba(57, 135, 229, 0.16);
   --cat-personal: #94a3b8;
   --cat-personal-soft: rgba(148, 163, 184, 0.14);
   --cat-school: #d95926;

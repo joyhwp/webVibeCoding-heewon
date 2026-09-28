@@ -70,7 +70,7 @@ export default function QuickLinks() {
     <section
       ref={sectionRef}
       className="relative left-1/2 right-1/2 -mx-[50vw] mt-20 flex min-h-[70vh] w-screen items-center justify-center px-4"
-      style={{ backgroundColor: `rgba(6, 6, 8, ${progress})` }}
+      style={{ backgroundColor: `rgba(74, 74, 74, ${progress})` }}
     >
       <div
         className="relative z-10 mx-auto flex max-w-2xl flex-col items-center gap-6 py-24 text-center"
