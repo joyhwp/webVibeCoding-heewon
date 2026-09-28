@@ -5,6 +5,7 @@ import GlassButton from "@/components/ui/GlassButton";
 import {
   ACCENT_CHIP_SELECTED,
   CATEGORY_STYLES,
+  NEUTRAL_CHIP_UNSELECTED,
   TASK_CATEGORIES,
   type TaskCategory,
 } from "@/lib/taskCategory";
@@ -192,7 +193,7 @@ export default function AddTaskForm({ todayKey, onAdd }: AddTaskFormProps) {
                     "flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
                     isSelected
                       ? ACCENT_CHIP_SELECTED
-                      : "border-transparent bg-foreground/5 text-foreground/60 hover:bg-foreground/10"
+                      : NEUTRAL_CHIP_UNSELECTED
                   )}
                 >
                   <span className={`h-2 w-2 rounded-full ${style.dot}`} />
