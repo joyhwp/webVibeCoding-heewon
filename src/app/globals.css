@@ -12,17 +12,9 @@
   [data-theme=clean][data-clean-base=dark] *
 ));
 
-/* Clean 모드에서만 적용할 것(그라데이션 블롭 숨김 등)을 위한 clean: 유틸리티 */
-@custom-variant clean (&:where([data-theme=clean], [data-theme=clean] *));
-
 :root {
   --background: #f7f2eb;
   --foreground: #4a4a4a;
-
-  /* 세이지·크림 팔레트 — 위쪽은 베이지(#eae2d6)를 살짝 머금고 아래로
-     갈수록 크림(#f7f2eb)으로 가라앉는 은은한 그라데이션. 그 위를 흘러가는
-     구름(CloudBackground.tsx)과 짝을 이뤄 다크모드의 밤하늘(별)에 대응한다. */
-  --gradient-bg: linear-gradient(180deg, #eae2d6 0%, #f7f2eb 55%, #f7f2eb 100%);
 
   --glass-bg: rgba(238, 238, 238, 0.6);
   --glass-border: rgba(234, 226, 214, 0.9);
@@ -115,8 +107,6 @@
     --background: #0f1115;
     --foreground: #e9eaee;
 
-    --gradient-bg: linear-gradient(180deg, #0f1115 0%, #12141a 50%, #0f1115 100%);
-
     --glass-bg: rgba(30, 30, 35, 0.55);
     --glass-border: rgba(255, 255, 255, 0.14);
     --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
@@ -165,8 +155,6 @@
 :root[data-theme="dark"] {
   --background: #0f1115;
   --foreground: #e9eaee;
-
-  --gradient-bg: linear-gradient(180deg, #0f1115 0%, #12141a 50%, #0f1115 100%);
 
   --glass-bg: rgba(30, 30, 35, 0.55);
   --glass-border: rgba(255, 255, 255, 0.14);
@@ -220,7 +208,6 @@
 :root[data-theme="clean"] {
   --background: #fbfbfa;
   --foreground: #1d1d1f;
-  --gradient-bg: #fbfbfa;
 
   --glass-bg: #ffffff;
   --glass-border: rgba(0, 0, 0, 0.08);
@@ -268,7 +255,6 @@
 :root[data-theme="clean"][data-clean-base="dark"] {
   --background: #191919;
   --foreground: #ededed;
-  --gradient-bg: #191919;
 
   --glass-bg: #232323;
   --glass-border: rgba(255, 255, 255, 0.08);
@@ -389,7 +375,7 @@
 }
 
 body {
-  background: var(--gradient-bg) fixed;
+  background-color: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont,
     "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -524,21 +510,6 @@ body {
   border-radius: inherit;
 }
 
-/* 빈 상태 일러스트가 아주 느리게 둥둥 떠다니는 효과 */
-@keyframes float-slow {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
-}
-
-.float-slow {
-  animation: float-slow 4s ease-in-out infinite;
-}
-
 /* 캘린더 날짜 칸 클릭 리플 */
 @keyframes ripple-expand {
   from {
@@ -553,82 +524,6 @@ body {
 
 .ripple-expand {
   animation: ripple-expand 0.5s ease-out forwards;
-}
-
-/* 라이트모드 낮 하늘 배경(CloudBackground.tsx) — 다크모드의 별 배경과 짝을
-   이루는 테마. 구름 패턴을 정확히 같은 모양으로 두 장(tile) 나란히 두고,
-   그 컨테이너를 딱 한 장 너비(-100vw)만큼 transform: translateX로 밀어서
-   완전히 매끄럽게 무한 반복되게 한다 — background-position 애니메이션과
-   달리 transform만 쓰므로 리페인트 없이 가볍게(합성만으로) 움직인다. */
-@keyframes cloud-drift {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-100vw);
-  }
-}
-
-.cloud-sky-track {
-  display: flex;
-  width: 200vw;
-  height: 100%;
-  filter: blur(6px);
-  animation: cloud-drift 36s linear infinite;
-  will-change: transform;
-}
-
-.cloud-sky-tile {
-  flex: 0 0 100vw;
-  height: 100%;
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  /* 은은한 회백색 구름 여러 개 — 크고 흐린 것(멀리 있는 느낌)과
-     작고 좀 더 또렷한 것(가까이 있는 느낌)을 섞는다.
-     하늘 자체가 거의 흰색에 가까운 그라데이션이라, 구름 alpha를 꽤
-     높게 잡아야 실제로 대비가 생겨 눈에 보인다(낮게 잡으면 사실상
-     안 보이는 수준이 됨 — 한 번 겪은 버그). */
-  background-image: radial-gradient(
-      ellipse 38% 16% at 8% 20%,
-      rgba(255, 255, 255, 0.62),
-      transparent 70%
-    ),
-    radial-gradient(
-      ellipse 34% 15% at 62% 12%,
-      rgba(255, 255, 255, 0.58),
-      transparent 70%
-    ),
-    radial-gradient(
-      ellipse 42% 18% at 38% 68%,
-      rgba(255, 255, 255, 0.55),
-      transparent 72%
-    ),
-    radial-gradient(
-      ellipse 24% 11% at 85% 45%,
-      rgba(255, 255, 255, 0.78),
-      transparent 68%
-    ),
-    radial-gradient(
-      ellipse 22% 10% at 18% 52%,
-      rgba(255, 255, 255, 0.75),
-      transparent 68%
-    ),
-    radial-gradient(
-      ellipse 14% 7% at 72% 80%,
-      rgba(255, 255, 255, 0.95),
-      transparent 64%
-    ),
-    radial-gradient(
-      ellipse 12% 6% at 30% 30%,
-      rgba(255, 255, 255, 0.92),
-      transparent 64%
-    );
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .cloud-sky-track {
-    animation: none !important;
-  }
 }
 
 /* study 탭 코드 블록 문법 강조 (CodeBlock.tsx, highlight.js) */

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
-import AmbientBackground from "@/components/AmbientBackground";
 import PasswordGate from "@/components/PasswordGate";
 import TabNav from "@/components/TabNav";
 import PageTransition from "@/components/PageTransition";
@@ -72,7 +71,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
       </head>
       <body className="flex min-h-full flex-col overflow-x-hidden">
-        <AmbientBackground />
         <PasswordGate>
           <TabNav />
           <main className="mx-auto w-full max-w-[1160px] flex-1 px-6 pb-20">

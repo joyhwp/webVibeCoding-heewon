@@ -53,156 +53,134 @@ export default function InProgressWidget() {
   }
 
   return (
-    <div className="relative">
-      {/* 배경 곳곳에 스며드는 파스텔 블롭 — 카드 안에만 색이 갇혀 보이지
-          않게, 위젯 주변으로 은은하게 번지는 느낌을 준다 */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -inset-x-6 -inset-y-10 -z-10 overflow-visible clean:hidden"
-      >
-        <div
-          className="float-slow absolute -left-8 top-0 h-52 w-52 rounded-full opacity-40 blur-3xl"
-          style={{ backgroundColor: "var(--cat-deartime)" }}
-        />
-        <div
-          className="float-slow absolute right-0 top-6 h-44 w-44 rounded-full opacity-30 blur-3xl"
-          style={{ backgroundColor: "var(--cat-school)", animationDelay: "1.3s" }}
-        />
-        <div
-          className="float-slow absolute bottom-0 left-1/3 h-40 w-40 rounded-full opacity-30 blur-3xl"
-          style={{ backgroundColor: "var(--cat-study)", animationDelay: "2.6s" }}
-        />
+    <GlassCard
+      className="flex flex-col gap-4"
+      style={{ background: "color-mix(in srgb, var(--glass-bg) 65%, transparent)" }}
+    >
+      <div className="font-pretendard flex flex-wrap items-end justify-between gap-3.5">
+        <div>
+          <p className="text-sm" style={{ color: "var(--hero-ink3)" }}>
+            In Progress
+          </p>
+          <h2 className="mt-1.5 text-[26px] font-bold tracking-[-0.03em]">
+            Projects &amp; reading
+          </h2>
+        </div>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/archive"
+            className="rounded-full border px-[18px] py-2.5 text-sm font-medium transition-colors hover:bg-[var(--hero-chip)]"
+            style={{ borderColor: "var(--hero-line)", background: "var(--hero-card)" }}
+          >
+            Archive
+          </Link>
+          <button
+            type="button"
+            onClick={() => setFormOpen((v) => !v)}
+            className="rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background transition-opacity hover:opacity-90"
+          >
+            {formOpen ? "Cancel" : "+ New"}
+          </button>
+        </div>
       </div>
 
-      <GlassCard
-        className="relative flex flex-col gap-4"
-        style={{ background: "color-mix(in srgb, var(--glass-bg) 65%, transparent)" }}
-      >
-        <div className="font-pretendard flex flex-wrap items-end justify-between gap-3.5">
-          <div>
-            <p className="text-sm" style={{ color: "var(--hero-ink3)" }}>
-              In Progress
-            </p>
-            <h2 className="mt-1.5 text-[26px] font-bold tracking-[-0.03em]">
-              Projects &amp; reading
-            </h2>
-          </div>
-          <div className="flex items-center gap-2">
-            <Link
-              href="/archive"
-              className="rounded-full border px-[18px] py-2.5 text-sm font-medium transition-colors hover:bg-[var(--hero-chip)]"
-              style={{ borderColor: "var(--hero-line)", background: "var(--hero-card)" }}
-            >
-              Archive
-            </Link>
-            <button
-              type="button"
-              onClick={() => setFormOpen((v) => !v)}
-              className="rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background transition-opacity hover:opacity-90"
-            >
-              {formOpen ? "Cancel" : "+ New"}
-            </button>
-          </div>
-        </div>
-
-        {formOpen && (
-          <form
-            onSubmit={handleSubmit}
-            className="flex flex-col gap-3 rounded-2xl bg-foreground/5 p-4"
-          >
-            <div className="flex flex-col gap-1.5 sm:flex-row">
+      {formOpen && (
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-3 rounded-2xl bg-foreground/5 p-4"
+        >
+          <div className="flex flex-col gap-1.5 sm:flex-row">
+            <input
+              type="text"
+              list="progress-book-titles"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="What are you working on?"
+              required
+              className="glass-panel flex-1 rounded-xl border-0 px-4 py-2.5 text-sm outline-none placeholder:text-foreground/40 focus:ring-2 focus:ring-[#8B9A6E]/30 dark:focus:ring-blue-400/30"
+            />
+            <datalist id="progress-book-titles">
+              {knownBookTitles.map((t) => (
+                <option key={t} value={t} />
+              ))}
+            </datalist>
+            {!isDearTime && (
               <input
-                type="text"
-                list="progress-book-titles"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="What are you working on?"
-                required
-                className="glass-panel flex-1 rounded-xl border-0 px-4 py-2.5 text-sm outline-none placeholder:text-foreground/40 focus:ring-2 focus:ring-[#8B9A6E]/30 dark:focus:ring-blue-400/30"
+                type="number"
+                min={0}
+                max={100}
+                value={percent}
+                onChange={(e) => setInitialPercent(e.target.value)}
+                placeholder="%"
+                className="glass-panel w-full rounded-xl border-0 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#8B9A6E]/30 dark:focus:ring-blue-400/30 sm:w-20"
               />
-              <datalist id="progress-book-titles">
-                {knownBookTitles.map((t) => (
-                  <option key={t} value={t} />
-                ))}
-              </datalist>
-              {!isDearTime && (
-                <input
-                  type="number"
-                  min={0}
-                  max={100}
-                  value={percent}
-                  onChange={(e) => setInitialPercent(e.target.value)}
-                  placeholder="%"
-                  className="glass-panel w-full rounded-xl border-0 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#8B9A6E]/30 dark:focus:ring-blue-400/30 sm:w-20"
-                />
-              )}
-            </div>
-
-            {isDearTime && (
-              <p className="text-xs text-foreground/45">
-                Percent is calculated automatically from your DEAR Time
-                reading log (Add Task below) — set total pages on the card
-                once you&apos;ve added one.
-              </p>
             )}
-
-            <div className="flex flex-wrap gap-2">
-              {TASK_CATEGORIES.map(({ value, label }) => {
-                const style = CATEGORY_STYLES[value];
-                const isSelected = category === value;
-                return (
-                  <button
-                    key={value}
-                    type="button"
-                    onClick={() => setCategory(value)}
-                    className={cx(
-                      "flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
-                      isSelected
-                        ? ACCENT_CHIP_SELECTED
-                        : "border-transparent bg-foreground/5 text-foreground/60 hover:bg-foreground/10"
-                    )}
-                  >
-                    <span className={`h-2 w-2 rounded-full ${style.dot}`} />
-                    {label}
-                  </button>
-                );
-              })}
-            </div>
-
-            <GlassButton type="submit" className="self-start">
-              Add
-            </GlassButton>
-          </form>
-        )}
-
-        {activeItems.length === 0 ? (
-          <p className="text-sm text-foreground/50">
-            Nothing in progress yet — add a project, a course, or a book to
-            track.
-          </p>
-        ) : (
-          // overflow-x-auto가 걸린 요소는 CSS 스펙상 overflow-y도 (설정하지
-          // 않아도) 자동으로 클리핑된다 — hover 시 커지는 카드 그림자/lift가
-          // 위아래로 잘리는 원인. 세로로 여유 패딩을 주고 같은 크기의 음수
-          // 마진으로 상쇄해서, 바깥 레이아웃 간격은 그대로 두면서 그림자가
-          // 번질 여백만 확보한다.
-          <div className="-mx-1 -my-8 flex items-start gap-3 overflow-x-auto px-1 py-8">
-            {activeItems.map((item) => (
-              <ProgressCard
-                key={item.id}
-                item={item}
-                isEditing={editingId === item.id}
-                onToggleEdit={(id) =>
-                  setEditingId((cur) => (cur === id ? null : id))
-                }
-                onSetPercent={setPercent}
-                onUpdate={update}
-                onComplete={complete}
-              />
-            ))}
           </div>
-        )}
-      </GlassCard>
-    </div>
+
+          {isDearTime && (
+            <p className="text-xs text-foreground/45">
+              Percent is calculated automatically from your DEAR Time
+              reading log (Add Task below) — set total pages on the card
+              once you&apos;ve added one.
+            </p>
+          )}
+
+          <div className="flex flex-wrap gap-2">
+            {TASK_CATEGORIES.map(({ value, label }) => {
+              const style = CATEGORY_STYLES[value];
+              const isSelected = category === value;
+              return (
+                <button
+                  key={value}
+                  type="button"
+                  onClick={() => setCategory(value)}
+                  className={cx(
+                    "flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
+                    isSelected
+                      ? ACCENT_CHIP_SELECTED
+                      : "border-transparent bg-foreground/5 text-foreground/60 hover:bg-foreground/10"
+                  )}
+                >
+                  <span className={`h-2 w-2 rounded-full ${style.dot}`} />
+                  {label}
+                </button>
+              );
+            })}
+          </div>
+
+          <GlassButton type="submit" className="self-start">
+            Add
+          </GlassButton>
+        </form>
+      )}
+
+      {activeItems.length === 0 ? (
+        <p className="text-sm text-foreground/50">
+          Nothing in progress yet — add a project, a course, or a book to
+          track.
+        </p>
+      ) : (
+        // overflow-x-auto가 걸린 요소는 CSS 스펙상 overflow-y도 (설정하지
+        // 않아도) 자동으로 클리핑된다 — hover 시 커지는 카드 그림자/lift가
+        // 위아래로 잘리는 원인. 세로로 여유 패딩을 주고 같은 크기의 음수
+        // 마진으로 상쇄해서, 바깥 레이아웃 간격은 그대로 두면서 그림자가
+        // 번질 여백만 확보한다.
+        <div className="-mx-1 -my-8 flex items-start gap-3 overflow-x-auto px-1 py-8">
+          {activeItems.map((item) => (
+            <ProgressCard
+              key={item.id}
+              item={item}
+              isEditing={editingId === item.id}
+              onToggleEdit={(id) =>
+                setEditingId((cur) => (cur === id ? null : id))
+              }
+              onSetPercent={setPercent}
+              onUpdate={update}
+              onComplete={complete}
+            />
+          ))}
+        </div>
+      )}
+    </GlassCard>
   );
 }
