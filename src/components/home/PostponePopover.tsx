@@ -11,7 +11,7 @@ type PostponePopoverProps = {
 };
 
 const fieldClass =
-  "rounded-lg border-0 bg-foreground/5 px-2 py-1.5 text-xs outline-none focus:ring-2 focus:ring-blue-500/30";
+  "rounded-lg border-0 bg-foreground/5 px-2 py-1.5 text-xs outline-none focus:ring-2 focus:ring-[#8B9A6E]/30 dark:focus:ring-blue-400/30";
 
 export default function PostponePopover({
   todayKey,
@@ -80,7 +80,7 @@ export default function PostponePopover({
               isAllDay ? undefined : end || undefined
             )
           }
-          className="rounded-full bg-blue-600 px-2.5 py-1 text-[11px] font-medium text-white hover:bg-blue-700"
+          className="rounded-full bg-[#8B9A6E] px-2.5 py-1 text-[11px] font-medium text-white hover:bg-[#76835E] dark:bg-blue-500 dark:hover:bg-blue-400"
         >
           Move
         </button>

@@ -61,7 +61,7 @@ export default function MdText({ text, inline = false, className }: MdTextProps)
             href={href}
             target="_blank"
             rel="noreferrer"
-            className="text-blue-600 underline decoration-blue-600/40 underline-offset-2 dark:text-blue-400"
+            className="text-[#8B9A6E] underline decoration-[#8B9A6E]/40 underline-offset-2 dark:text-blue-400"
           >
             {children}
           </a>

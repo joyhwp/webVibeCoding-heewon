@@ -29,19 +29,46 @@ function MoonIcon() {
   );
 }
 
+// Clean(노션풍) 모드 아이콘 — 얇은 선 형태의 문서/페이지 모양
+function CleanIcon() {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" className="h-4 w-4" aria-hidden="true">
+      <rect x="4.5" y="2.5" width="11" height="15" rx="2" stroke="currentColor" strokeWidth="1.5" />
+      <path
+        d="M7.2 7h5.6M7.2 10h5.6M7.2 13h3.2"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+const NEXT_LABEL: Record<string, string> = {
+  light: "Switch to dark mode",
+  dark: "Switch to clean mode",
+  clean: "Switch to light mode",
+};
+
 export default function ThemeToggle() {
-  const { theme, toggle } = useTheme();
-  const isDark = theme === "dark";
+  const { theme, cycle } = useTheme();
 
   return (
     <button
       type="button"
-      onClick={toggle}
-      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-      title={isDark ? "Switch to light mode" : "Switch to dark mode"}
-      className="glass-panel flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-foreground/70 transition-colors hover:text-foreground"
+      onClick={cycle}
+      aria-label={NEXT_LABEL[theme]}
+      title={NEXT_LABEL[theme]}
+      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border text-foreground/70 transition-colors hover:text-foreground"
+      style={{ background: "var(--hero-card)", borderColor: "var(--hero-line)" }}
     >
-      {isDark ? <MoonIcon /> : <SunIcon />}
+      {theme === "dark" ? (
+        <MoonIcon />
+      ) : theme === "clean" ? (
+        <CleanIcon />
+      ) : (
+        <SunIcon />
+      )}
     </button>
   );
 }

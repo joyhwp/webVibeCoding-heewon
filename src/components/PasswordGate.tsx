@@ -10,8 +10,10 @@ const CORRECT_PASSWORD = "00";
 /**
  * 사이트 전체를 가리는 아주 단순한 비밀번호 게이트.
  * 잠긴 동안은 children을 아예 렌더링하지 않는다 — 대시보드 어떤 부분도
- * 화면에 나오거나 데이터를 읽지 않는다. 한 번 맞히면 localStorage에 저장해서
- * 재방문 시 다시 묻지 않는다(useUnlocked 훅, useTheme.ts와 같은 SSR 안전 패턴).
+ * 화면에 나오거나 데이터를 읽지 않는다. 한 번 맞히면 localStorage에 만료 시각과
+ * 함께 저장해서 그 기간 동안은 재방문 시 다시 묻지 않는다(useUnlocked 훅,
+ * useTheme.ts와 같은 SSR 안전 패턴). localStorage는 오리진(도메인) 단위라
+ * 브라우저·기기·URL(예: Vercel preview URL)이 다르면 각각 따로 인증해야 한다.
  */
 export default function PasswordGate({ children }: { children: ReactNode }) {
   const { unlocked, unlock } = useUnlocked();
@@ -47,11 +49,11 @@ export default function PasswordGate({ children }: { children: ReactNode }) {
               onChange={(e) => setInput(e.target.value)}
               autoFocus
               aria-label="Password"
-              className="glass-panel w-full rounded-xl border-0 px-4 py-2.5 text-center text-sm tracking-widest outline-none focus:ring-2 focus:ring-blue-500/30 dark:focus:ring-blue-400/30"
+              className="glass-panel w-full rounded-xl border-0 px-4 py-2.5 text-center text-sm tracking-widest outline-none focus:ring-2 focus:ring-[#8B9A6E]/30 dark:focus:ring-blue-400/30"
             />
             <button
               type="submit"
-              className="rounded-full bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400"
+              className="rounded-full bg-[#8B9A6E] px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#76835E] dark:bg-blue-500 dark:hover:bg-blue-400"
             >
               Enter
             </button>

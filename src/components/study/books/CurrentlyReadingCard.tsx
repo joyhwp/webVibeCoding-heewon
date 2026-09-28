@@ -106,7 +106,7 @@ export default function CurrentlyReadingCard({
                     onChange={(e) => setDraftTarget(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && handleSaveTarget()}
                     placeholder="total pages"
-                    className="w-20 rounded-lg border-0 bg-foreground/5 px-2 py-1 text-xs outline-none focus:ring-2 focus:ring-blue-500/30"
+                    className="w-20 rounded-lg border-0 bg-foreground/5 px-2 py-1 text-xs outline-none focus:ring-2 focus:ring-[#8B9A6E]/30 dark:focus:ring-blue-400/30"
                   />
                   <button
                     type="button"

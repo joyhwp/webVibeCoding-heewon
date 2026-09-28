@@ -56,7 +56,7 @@ export default function QuotesSection({
         <button
           type="button"
           onClick={() => setFormOpen((v) => !v)}
-          className="text-xs font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+          className="text-xs font-medium text-[#8B9A6E] hover:text-[#76835E] dark:text-blue-400 dark:hover:text-blue-300"
         >
           {formOpen ? "Cancel" : "+ Add Quote"}
         </button>
@@ -73,7 +73,7 @@ export default function QuotesSection({
             placeholder="What stood out to you?"
             required
             rows={3}
-            className="glass-panel resize-none rounded-xl border-0 px-4 py-2.5 text-sm outline-none placeholder:text-foreground/40 focus:ring-2 focus:ring-blue-500/30 dark:focus:ring-blue-400/30"
+            className="glass-panel resize-none rounded-xl border-0 px-4 py-2.5 text-sm outline-none placeholder:text-foreground/40 focus:ring-2 focus:ring-[#8B9A6E]/30 dark:focus:ring-blue-400/30"
           />
           <div className="flex flex-col gap-2 sm:flex-row">
             <input
@@ -83,7 +83,7 @@ export default function QuotesSection({
               onChange={(e) => setBookTitle(e.target.value)}
               placeholder="Book title"
               required
-              className="glass-panel flex-1 rounded-xl border-0 px-4 py-2.5 text-sm outline-none placeholder:text-foreground/40 focus:ring-2 focus:ring-blue-500/30 dark:focus:ring-blue-400/30"
+              className="glass-panel flex-1 rounded-xl border-0 px-4 py-2.5 text-sm outline-none placeholder:text-foreground/40 focus:ring-2 focus:ring-[#8B9A6E]/30 dark:focus:ring-blue-400/30"
             />
             <datalist id="quote-book-titles">
               {bookTitles.map((t) => (
@@ -96,7 +96,7 @@ export default function QuotesSection({
               value={page}
               onChange={(e) => setPage(e.target.value)}
               placeholder="Page"
-              className="glass-panel w-full rounded-xl border-0 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500/30 dark:focus:ring-blue-400/30 sm:w-24"
+              className="glass-panel w-full rounded-xl border-0 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#8B9A6E]/30 dark:focus:ring-blue-400/30 sm:w-24"
             />
           </div>
           <GlassButton type="submit" className="self-start">

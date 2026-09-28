@@ -1,10 +1,11 @@
 // home 탭 할일의 카테고리 정의 + 카테고리별 색상 스타일.
 // AddTaskForm(선택 칩)과 Timeline(색상 태그/블록)에서 공통으로 사용한다.
 //
-// 색상 원칙: 사이트 전체 포인트 컬러는 blue 하나로 통일한다.
+// 색상 원칙: 사이트 전체 포인트 컬러는 하나로 통일한다 (라이트: 세이지 그린
+// #8B9A6E, 다크는 기존 blue를 그대로 유지).
 // 카테고리는 서로 다른 색상을 쓰지 않고, 하나의 무채색(slate) 톤 안에서
-// 명도만 다르게 줘서 차분하게 구분한다. (선택 상태 강조는 공통으로 blue)
-// 학교 시간표(반복 수업)만 유일하게 포인트 컬러(blue)를 사용해
+// 명도만 다르게 줘서 차분하게 구분한다. (선택 상태 강조는 공통으로 포인트 컬러)
+// 학교 시간표(반복 수업)만 유일하게 포인트 컬러를 사용해
 // 일반 할일과 한눈에 구분되게 한다.
 
 export type TaskCategory =
@@ -101,7 +102,7 @@ export const CATEGORY_STYLES: Record<TaskCategory, CategoryStyle> = {
 // 진한 accent 팔레트. 홈 타임라인의 차분한 slate 톤과는 별개로, Today
 // 탭에서만 "색이 화면의 주인공"이 되도록 쓴다. globals.css의 --cat-* 변수를
 // 참조해서 라이트/다크 모드에 따라 자동으로 값이 바뀐다.
-// class(반복 수업)는 사이트 전역에서 이미 blue를 쓰므로 겹치지 않게 별도 slot,
+// class(반복 수업)는 사이트 전역에서 이미 포인트 컬러를 쓰므로 겹치지 않게 별도 slot,
 // personal은 원래도 가장 중립적인 카테고리라 무채색(slate) accent를 그대로 쓴다.
 export type CategoryAccent = { solid: string; soft: string };
 
@@ -125,13 +126,13 @@ export const CLASS_ACCENT: CategoryAccent = {
   soft: "var(--cat-class-soft)",
 };
 
-// 폼에서 선택된 카테고리 칩의 공통 강조 스타일 (사이트 포인트 컬러: blue)
-// 다크모드에선 블루를 더 밝게 + 배경 대비도 살짝 키움
+// 폼에서 선택된 카테고리 칩의 공통 강조 스타일 (사이트 포인트 컬러: 세이지 그린)
+// 다크모드에선 기존 블루를 더 밝게 + 배경 대비도 살짝 키움
 export const ACCENT_CHIP_SELECTED =
-  "border-blue-400/60 bg-blue-500/15 text-blue-700 dark:border-blue-400/50 dark:bg-blue-400/20 dark:text-blue-200";
+  "border-[#8B9A6E]/60 bg-[#8B9A6E]/15 text-[#4C553D] dark:border-blue-400/50 dark:bg-blue-400/20 dark:text-blue-200";
 
-// 학교 시간표(반복 수업) 전용 색 — 유일하게 포인트 컬러(blue)를 사용해
+// 학교 시간표(반복 수업) 전용 색 — 유일하게 포인트 컬러를 사용해
 // "학교" 카테고리로 수동 입력한 할일과도 구분된다.
 export const CLASS_BLOCK_STYLE =
-  "border-blue-300/60 bg-blue-100/70 text-blue-900 dark:border-blue-400/30 dark:bg-blue-400/10 dark:text-blue-200";
-export const CLASS_DOT_STYLE = "bg-blue-500";
+  "border-[#8B9A6E]/40 bg-[#8B9A6E]/15 text-[#313627] dark:border-blue-400/30 dark:bg-blue-400/10 dark:text-blue-200";
+export const CLASS_DOT_STYLE = "bg-[#8B9A6E] dark:bg-blue-500";

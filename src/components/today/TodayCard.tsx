@@ -104,7 +104,7 @@ export default function TodayCard({
             checked={completed}
             onChange={() => onToggleComplete?.(entry.id, entry.originDateKey)}
             aria-label="Mark complete"
-            className="h-4 w-4 cursor-pointer accent-blue-600"
+            className="h-4 w-4 cursor-pointer accent-[#8B9A6E] dark:accent-blue-600"
           />
           <button
             type="button"

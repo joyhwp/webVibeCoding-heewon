@@ -131,7 +131,7 @@ export default function AddTaskForm({ todayKey, onAdd }: AddTaskFormProps) {
             value={date}
             onChange={(e) => setDate(e.target.value)}
             required
-            className="glass-panel w-full rounded-xl border-0 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500/30 dark:focus:ring-blue-400/30"
+            className="glass-panel w-full rounded-xl border-0 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#8B9A6E]/30 dark:focus:ring-blue-400/30"
           />
         </div>
 
@@ -149,7 +149,7 @@ export default function AddTaskForm({ todayKey, onAdd }: AddTaskFormProps) {
               value={startTime}
               onChange={(e) => setStartTime(e.target.value)}
               required
-              className="glass-panel w-full rounded-xl border-0 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500/30 dark:focus:ring-blue-400/30"
+              className="glass-panel w-full rounded-xl border-0 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#8B9A6E]/30 dark:focus:ring-blue-400/30"
             />
           </div>
           <div className="flex flex-1 flex-col gap-1.5">
@@ -163,7 +163,7 @@ export default function AddTaskForm({ todayKey, onAdd }: AddTaskFormProps) {
               id="task-duration"
               value={duration}
               onChange={(e) => setDuration(e.target.value)}
-              className="glass-panel w-full rounded-xl border-0 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500/30 dark:focus:ring-blue-400/30"
+              className="glass-panel w-full rounded-xl border-0 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#8B9A6E]/30 dark:focus:ring-blue-400/30"
             >
               <option value="">None</option>
               {DURATION_OPTIONS.map((hours) => (
@@ -220,7 +220,7 @@ export default function AddTaskForm({ todayKey, onAdd }: AddTaskFormProps) {
                 onChange={(e) => handleBookTitleChange(e.target.value)}
                 placeholder="Book title"
                 required
-                className="glass-panel rounded-xl border-0 px-4 py-2.5 text-sm outline-none placeholder:text-foreground/40 focus:ring-2 focus:ring-blue-500/30 dark:focus:ring-blue-400/30"
+                className="glass-panel rounded-xl border-0 px-4 py-2.5 text-sm outline-none placeholder:text-foreground/40 focus:ring-2 focus:ring-[#8B9A6E]/30 dark:focus:ring-blue-400/30"
               />
               <datalist id="known-book-titles">
                 {knownBookTitles.map((title) => (
@@ -244,7 +244,7 @@ export default function AddTaskForm({ todayKey, onAdd }: AddTaskFormProps) {
                   value={startPage}
                   onChange={(e) => setStartPage(e.target.value)}
                   required
-                  className="glass-panel w-full rounded-xl border-0 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500/30 dark:focus:ring-blue-400/30"
+                  className="glass-panel w-full rounded-xl border-0 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#8B9A6E]/30 dark:focus:ring-blue-400/30"
                 />
               </div>
               <div className="flex flex-1 flex-col gap-1.5">
@@ -261,7 +261,7 @@ export default function AddTaskForm({ todayKey, onAdd }: AddTaskFormProps) {
                   min={1}
                   value={endPage}
                   onChange={(e) => setEndPage(e.target.value)}
-                  className="glass-panel w-full rounded-xl border-0 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500/30 dark:focus:ring-blue-400/30"
+                  className="glass-panel w-full rounded-xl border-0 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#8B9A6E]/30 dark:focus:ring-blue-400/30"
                 />
               </div>
             </div>
@@ -281,7 +281,7 @@ export default function AddTaskForm({ todayKey, onAdd }: AddTaskFormProps) {
               onChange={(e) => setTask(e.target.value)}
               placeholder="What do you need to do?"
               required
-              className="glass-panel rounded-xl border-0 px-4 py-2.5 text-sm outline-none placeholder:text-foreground/40 focus:ring-2 focus:ring-blue-500/30 dark:focus:ring-blue-400/30"
+              className="glass-panel rounded-xl border-0 px-4 py-2.5 text-sm outline-none placeholder:text-foreground/40 focus:ring-2 focus:ring-[#8B9A6E]/30 dark:focus:ring-blue-400/30"
             />
           </div>
         )}

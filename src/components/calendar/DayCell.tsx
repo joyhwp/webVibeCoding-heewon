@@ -56,9 +56,9 @@ export default function DayCell({
         "relative flex aspect-square flex-col items-center justify-center gap-1 overflow-hidden rounded-2xl text-sm transition-colors",
         isCurrentMonth ? "text-foreground" : "text-foreground/25",
         isSelected
-          ? "bg-blue-600 text-white dark:bg-blue-500"
+          ? "bg-[#8B9A6E] text-white dark:bg-blue-500"
           : isToday
-            ? "bg-blue-500/10 font-semibold text-blue-700 dark:text-blue-300"
+            ? "bg-[#8B9A6E]/10 font-semibold text-[#4C553D] dark:text-blue-300"
             : "hover:bg-foreground/5"
       )}
     >
@@ -68,7 +68,7 @@ export default function DayCell({
           <span
             className={cx(
               "h-1 w-1 rounded-full",
-              isSelected ? "bg-white" : "bg-blue-500"
+              isSelected ? "bg-white" : "bg-[#8B9A6E] dark:bg-blue-500"
             )}
           />
         )}

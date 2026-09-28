@@ -51,7 +51,7 @@ export default function AllDayRow({
         checked={completed}
         onChange={() => onToggleComplete(entry.id, entry.originDateKey)}
         aria-label="Mark complete"
-        className="h-3.5 w-3.5 shrink-0 cursor-pointer accent-blue-600 opacity-40 transition-opacity group-hover:opacity-100"
+        className="h-3.5 w-3.5 shrink-0 cursor-pointer accent-[#8B9A6E] opacity-40 transition-opacity group-hover:opacity-100 dark:accent-blue-600"
       />
       <span className={`h-2 w-2 shrink-0 rounded-full ${entry.dotClass}`} />
       <span

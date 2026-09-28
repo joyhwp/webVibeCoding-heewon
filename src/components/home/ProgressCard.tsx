@@ -243,7 +243,7 @@ export default function ProgressCard({
             onChange={(e) => setDraftTitle(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSaveEdit()}
             placeholder="Name"
-            className="w-full rounded-full border-0 bg-foreground/5 px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-blue-500/30"
+            className="w-full rounded-full border-0 bg-foreground/5 px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-[#8B9A6E]/30 dark:focus:ring-blue-400/30"
           />
 
           <div className="flex flex-wrap gap-1.5">
@@ -278,7 +278,7 @@ export default function ProgressCard({
                 onChange={(e) => setDraftTotalPages(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSaveEdit()}
                 placeholder="Total pages"
-                className="w-full rounded-full border-0 bg-foreground/5 px-3 py-1.5 text-center text-xs outline-none focus:ring-2 focus:ring-blue-500/30"
+                className="w-full rounded-full border-0 bg-foreground/5 px-3 py-1.5 text-center text-xs outline-none focus:ring-2 focus:ring-[#8B9A6E]/30 dark:focus:ring-blue-400/30"
               />
               <input
                 type="number"
@@ -287,7 +287,7 @@ export default function ProgressCard({
                 onChange={(e) => setDraftCurrentPage(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSaveEdit()}
                 placeholder="Current page"
-                className="w-full rounded-full border-0 bg-foreground/5 px-3 py-1.5 text-center text-xs outline-none focus:ring-2 focus:ring-blue-500/30"
+                className="w-full rounded-full border-0 bg-foreground/5 px-3 py-1.5 text-center text-xs outline-none focus:ring-2 focus:ring-[#8B9A6E]/30 dark:focus:ring-blue-400/30"
               />
             </div>
           ) : (
@@ -307,7 +307,7 @@ export default function ProgressCard({
                 max={100}
                 value={draftPercent}
                 onChange={(e) => setDraftPercent(Number(e.target.value))}
-                className="w-12 rounded-full border-0 bg-foreground/5 px-1.5 py-1 text-center text-xs outline-none focus:ring-2 focus:ring-blue-500/30"
+                className="w-12 rounded-full border-0 bg-foreground/5 px-1.5 py-1 text-center text-xs outline-none focus:ring-2 focus:ring-[#8B9A6E]/30 dark:focus:ring-blue-400/30"
               />
             </div>
           )}

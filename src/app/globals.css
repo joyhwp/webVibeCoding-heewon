@@ -1,19 +1,31 @@
 @import "tailwindcss";
 
 /* dark: 유틸리티가 OS 설정이 아니라 <html data-theme="dark">를 따르게 함
-   (시간대 기준 자동 전환 + 수동 토글이 항상 실제로 반영되도록) */
-@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+   (시간대 기준 자동 전환 + 수동 토글이 항상 실제로 반영되도록). Clean 모드가
+   어두운 톤(data-clean-base="dark")일 때도 같은 dark: 유틸리티가 그대로
+   먹도록 함께 매칭시켜서, 앱 전체의 기존 dark: 클래스들이 Clean-dark에서도
+   별도 수정 없이 일관되게 적용되게 한다. */
+@custom-variant dark (&:where(
+  [data-theme=dark],
+  [data-theme=dark] *,
+  [data-theme=clean][data-clean-base=dark],
+  [data-theme=clean][data-clean-base=dark] *
+));
+
+/* Clean 모드에서만 적용할 것(그라데이션 블롭 숨김 등)을 위한 clean: 유틸리티 */
+@custom-variant clean (&:where([data-theme=clean], [data-theme=clean] *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #1d1d1f;
+  --background: #f7f2eb;
+  --foreground: #4a4a4a;
 
-  /* 낮 하늘 톤 — 은은한 블루에서 거의 흰색으로, 채도 낮게. 그 위를 흘러가는
+  /* 세이지·크림 팔레트 — 위쪽은 베이지(#eae2d6)를 살짝 머금고 아래로
+     갈수록 크림(#f7f2eb)으로 가라앉는 은은한 그라데이션. 그 위를 흘러가는
      구름(CloudBackground.tsx)과 짝을 이뤄 다크모드의 밤하늘(별)에 대응한다. */
-  --gradient-bg: linear-gradient(180deg, #cfe3f7 0%, #e7f0fa 45%, #fbfcfe 100%);
+  --gradient-bg: linear-gradient(180deg, #eae2d6 0%, #f7f2eb 55%, #f7f2eb 100%);
 
-  --glass-bg: rgba(255, 255, 255, 0.55);
-  --glass-border: rgba(255, 255, 255, 0.8);
+  --glass-bg: rgba(238, 238, 238, 0.6);
+  --glass-border: rgba(234, 226, 214, 0.9);
   --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   /* hover 시 살짝 떠오르는 카드용 — 기본 그림자보다 크고 은은하게 */
   --glass-shadow-hover: 0 10px 24px rgba(0, 0, 0, 0.16);
@@ -52,6 +64,41 @@
   --cat-study-soft: rgba(227, 73, 72, 0.14);
   --cat-project: #a1662f;
   --cat-project-soft: rgba(161, 102, 47, 0.14);
+
+  /* 다이어트 기록 점수(1~5) 색 — 라이트. calendar 탭 날짜 칸 하단 바
+     (DayCell.tsx)와 기록 입력 폼(DietLogCard.tsx)이 공유. 빨강(1, 잘 못
+     지킴) -> 초록(5, 아주 잘 지킴) 순으로 읽히는 간단한 신호등 톤. */
+  --diet-1: #e5484d;
+  --diet-2: #eb6834;
+  --diet-3: #d8a63e;
+  --diet-4: #7fc79a;
+  --diet-5: #1baf7a;
+
+  /* Home 히어로/네비(TabNav, HomeHero) 전용 디자인 토큰 — 라이트 기준.
+     --ink/--dark/--on-dark 개념은 이미 있는 --foreground/--background와
+     정확히 같은 값이라 별도 변수 없이 그 둘을 그대로 재사용한다. */
+  --hero-card: rgba(255, 253, 249, 0.62);
+  --hero-chip: #eeeeee;
+  --hero-line: #e6ded1;
+  --hero-ink2: #666360;
+  --hero-ink3: #8e8982;
+  --hero-nav-glass: rgba(247, 242, 235, 0.78);
+  --hero-gline: rgba(255, 255, 255, 0.7);
+  --hero-hl: rgba(255, 255, 255, 0.8);
+  --hero-shadow-rgb: 90, 74, 50;
+  --hero-blur: 28px;
+}
+
+/* 팔레트(세이지/네이비) — 라이트·다크·Clean 어디서든 같은 값을 쓰는,
+   테마와 무관한 브랜드 accent. usePalette 훅이 이 속성을 토글한다. */
+:root,
+:root[data-palette="sage"] {
+  --accent: #8b9a6e;
+  --accent-soft: #eae2d6;
+}
+:root[data-palette="navy"] {
+  --accent: #3f72af;
+  --accent-soft: #dbe2ef;
 }
 
 @theme inline {
@@ -105,6 +152,16 @@
     --cat-study-soft: rgba(230, 103, 103, 0.18);
     --cat-project: #c9975a;
     --cat-project-soft: rgba(201, 151, 90, 0.2);
+
+    --hero-card: rgba(30, 30, 35, 0.62);
+    --hero-chip: rgba(255, 255, 255, 0.08);
+    --hero-line: rgba(255, 255, 255, 0.14);
+    --hero-ink2: rgba(233, 234, 238, 0.65);
+    --hero-ink3: rgba(233, 234, 238, 0.45);
+    --hero-nav-glass: rgba(15, 17, 21, 0.78);
+    --hero-gline: rgba(255, 255, 255, 0.12);
+    --hero-hl: rgba(255, 255, 255, 0.08);
+    --hero-shadow-rgb: 0, 0, 0;
   }
 }
 
@@ -147,6 +204,197 @@
   --cat-study-soft: rgba(230, 103, 103, 0.18);
   --cat-project: #c9975a;
   --cat-project-soft: rgba(201, 151, 90, 0.2);
+
+  --hero-card: rgba(30, 30, 35, 0.62);
+  --hero-chip: rgba(255, 255, 255, 0.08);
+  --hero-line: rgba(255, 255, 255, 0.14);
+  --hero-ink2: rgba(233, 234, 238, 0.65);
+  --hero-ink3: rgba(233, 234, 238, 0.45);
+  --hero-nav-glass: rgba(15, 17, 21, 0.78);
+  --hero-gline: rgba(255, 255, 255, 0.12);
+  --hero-hl: rgba(255, 255, 255, 0.08);
+  --hero-shadow-rgb: 0, 0, 0;
+}
+
+/* ---------------------------------------------------------------------
+   Clean 모드 (노션풍) — 기존 라이트/다크(glass morphism) 위에 얹는 세 번째
+   스킨. data-theme="clean" + data-clean-base="light"|"dark"(그 순간의
+   기존 라이트/다크 계산 결과)로 표현된다. @layer 밖에 둬서 .glass-panel의
+   backdrop-filter 등 레이어드 규칙보다 항상 우선하며, 기존 :root /
+   :root[data-theme="dark"] 블록은 전혀 건드리지 않는다. */
+:root[data-theme="clean"] {
+  --background: #fbfbfa;
+  --foreground: #1d1d1f;
+  --gradient-bg: #fbfbfa;
+
+  --glass-bg: #ffffff;
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --glass-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --glass-shadow-hover: 0 1px 4px rgba(0, 0, 0, 0.07);
+
+  --hljs-keyword: #a626a4;
+  --hljs-string: #50a14f;
+  --hljs-number: #986801;
+  --hljs-comment: #a0a1a7;
+  --hljs-function: #4078f2;
+  --hljs-builtin: #c18401;
+  --hljs-variable: #e45649;
+
+  --cat-class: #2a78d6;
+  --cat-class-soft: rgba(42, 120, 214, 0.12);
+  --cat-personal: #64748b;
+  --cat-personal-soft: rgba(100, 116, 139, 0.12);
+  --cat-school: #eb6834;
+  --cat-school-soft: rgba(235, 104, 52, 0.14);
+  --cat-club: #1baf7a;
+  --cat-club-soft: rgba(27, 175, 122, 0.14);
+  --cat-tutoring: #eda100;
+  --cat-tutoring-soft: rgba(237, 161, 0, 0.16);
+  --cat-exam: #e87ba4;
+  --cat-exam-soft: rgba(232, 123, 164, 0.16);
+  --cat-assignment: #008300;
+  --cat-assignment-soft: rgba(0, 131, 0, 0.12);
+  --cat-deartime: #4a3aa7;
+  --cat-deartime-soft: rgba(74, 58, 167, 0.14);
+  --cat-study: #e34948;
+  --cat-study-soft: rgba(227, 73, 72, 0.14);
+  --cat-project: #a1662f;
+  --cat-project-soft: rgba(161, 102, 47, 0.14);
+
+  --hero-card: var(--glass-bg);
+  --hero-chip: rgba(0, 0, 0, 0.04);
+  --hero-line: var(--glass-border);
+  --hero-ink2: rgba(29, 29, 31, 0.65);
+  --hero-ink3: rgba(29, 29, 31, 0.45);
+  --hero-nav-glass: var(--background);
+  --hero-gline: var(--glass-border);
+  --hero-hl: rgba(255, 255, 255, 0.6);
+  --hero-shadow-rgb: 0, 0, 0;
+}
+
+:root[data-theme="clean"][data-clean-base="dark"] {
+  --background: #191919;
+  --foreground: #ededed;
+  --gradient-bg: #191919;
+
+  --glass-bg: #232323;
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --glass-shadow-hover: 0 1px 4px rgba(0, 0, 0, 0.4);
+
+  --hljs-keyword: #c678dd;
+  --hljs-string: #98c379;
+  --hljs-number: #d19a66;
+  --hljs-comment: #7f848e;
+  --hljs-function: #61afef;
+  --hljs-builtin: #e5c07b;
+  --hljs-variable: #e06c75;
+
+  --cat-class: #3987e5;
+  --cat-class-soft: rgba(57, 135, 229, 0.16);
+  --cat-personal: #94a3b8;
+  --cat-personal-soft: rgba(148, 163, 184, 0.14);
+  --cat-school: #d95926;
+  --cat-school-soft: rgba(217, 89, 38, 0.18);
+  --cat-club: #199e70;
+  --cat-club-soft: rgba(25, 158, 112, 0.18);
+  --cat-tutoring: #c98500;
+  --cat-tutoring-soft: rgba(201, 133, 0, 0.2);
+  --cat-exam: #d55181;
+  --cat-exam-soft: rgba(213, 81, 129, 0.2);
+  --cat-assignment: #2fae2f;
+  --cat-assignment-soft: rgba(47, 174, 47, 0.18);
+  --cat-deartime: #9085e9;
+  --cat-deartime-soft: rgba(144, 133, 233, 0.18);
+  --cat-study: #e66767;
+  --cat-study-soft: rgba(230, 103, 103, 0.18);
+  --cat-project: #c9975a;
+  --cat-project-soft: rgba(201, 151, 90, 0.2);
+
+  --hero-card: var(--glass-bg);
+  --hero-chip: rgba(255, 255, 255, 0.06);
+  --hero-line: var(--glass-border);
+  --hero-ink2: rgba(237, 237, 237, 0.65);
+  --hero-ink3: rgba(237, 237, 237, 0.45);
+  --hero-nav-glass: var(--background);
+  --hero-gline: var(--glass-border);
+  --hero-hl: rgba(255, 255, 255, 0.08);
+  --hero-shadow-rgb: 0, 0, 0;
+}
+
+/* 블러/그라데이션 없는 평면 카드 — backdrop-filter를 쓰는 .glass-panel
+   레이어드 규칙보다 항상 이기도록 @layer 밖에 둔다. */
+:root[data-theme="clean"] .glass-panel {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-width: 1px;
+}
+
+/* Clean 모드의 hover는 "배경이 살짝 어두워지는" 정도로 절제 — 뜨는 느낌 없음 */
+:root[data-theme="clean"] .hover-lift:hover {
+  transform: none;
+  box-shadow: var(--glass-shadow);
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+:root[data-theme="clean"][data-clean-base="dark"] .hover-lift:hover {
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+/* Home 히어로 카드(HomeHero.tsx)용 글래스 — 기존 .glass-panel보다 얇고
+   따뜻한 톤. Clean 모드에선 다른 glass류와 마찬가지로 블러를 끈다. */
+.hero-glass {
+  background: var(--hero-card);
+  border: 1px solid var(--hero-gline);
+  backdrop-filter: blur(var(--hero-blur)) saturate(160%);
+  -webkit-backdrop-filter: blur(var(--hero-blur)) saturate(160%);
+  box-shadow:
+    inset 0 1px 0 var(--hero-hl),
+    0 18px 40px -26px rgba(var(--hero-shadow-rgb), 0.35);
+}
+
+/* 상단 네비 바(TabNav.tsx) 전용 글래스 */
+.hero-nav {
+  background: var(--hero-nav-glass);
+  border: 1px solid var(--hero-line);
+  backdrop-filter: blur(var(--hero-blur)) saturate(160%);
+  -webkit-backdrop-filter: blur(var(--hero-blur)) saturate(160%);
+  box-shadow: 0 8px 28px -16px rgba(var(--hero-shadow-rgb), 0.18);
+}
+
+:root[data-theme="clean"] .hero-glass,
+:root[data-theme="clean"] .hero-nav {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Home 히어로/네비 전용 폰트 — 이 영역에만 적용, 사이트 기본 폰트는 그대로 둔다 */
+.font-pretendard {
+  font-family: "Pretendard Variable", Pretendard, -apple-system, sans-serif;
+  letter-spacing: -0.01em;
+}
+
+/* Up next 카드의 하루 진행률 바 — 폭은 그대로 두고 0→1로 scaleX만
+   애니메이션해서, 매번 다시 마운트될 때(오늘 날짜가 바뀔 때) 자라나는
+   느낌을 준다. */
+@keyframes day-progress-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.day-progress-fill {
+  transform-origin: left;
+  animation: day-progress-fill 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .day-progress-fill {
+    animation: none !important;
+  }
 }
 
 body {
@@ -438,6 +686,76 @@ body {
 /* study 탭 수식 렌더링 (MathBlock.tsx, KaTeX) — 다크모드에서도 글자색이 테마를 따라가게 */
 .katex {
   color: var(--foreground);
+}
+
+/* calendar 탭 주간 메모(WeeklyMemoCard.tsx) 좌우 슬라이드 전환 */
+@keyframes weekly-memo-out-left {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-28px);
+  }
+}
+
+@keyframes weekly-memo-out-right {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(28px);
+  }
+}
+
+@keyframes weekly-memo-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes weekly-memo-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(-28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.weekly-memo-slide-out-left {
+  animation: weekly-memo-out-left 0.16s ease-in both;
+}
+
+.weekly-memo-slide-out-right {
+  animation: weekly-memo-out-right 0.16s ease-in both;
+}
+
+.weekly-memo-slide-in-left {
+  animation: weekly-memo-in-left 0.2s ease-out both;
+}
+
+.weekly-memo-slide-in-right {
+  animation: weekly-memo-in-right 0.2s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .weekly-memo-slide-out-left,
+  .weekly-memo-slide-out-right,
+  .weekly-memo-slide-in-left,
+  .weekly-memo-slide-in-right {
+    animation: none !important;
+  }
 }
 
 /* 비밀번호 게이트(PasswordGate.tsx)에서 틀린 비밀번호 입력 시 살짝 흔들리는 피드백 */

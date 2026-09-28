@@ -331,20 +331,20 @@ export default function QuickAddBar({
             onChange={(e) => handleChange(e.target.value)}
             disabled={isLoading}
             placeholder='Try "내일 오후 3시 스터디" or "오늘 운영체제 휴강"'
-            className="glass-panel w-full rounded-xl border-0 px-4 py-2.5 pr-9 text-sm outline-none placeholder:text-foreground/35 focus:ring-2 focus:ring-blue-500/30 disabled:opacity-60 dark:focus:ring-blue-400/30"
+            className="glass-panel w-full rounded-xl border-0 px-4 py-2.5 pr-9 text-sm outline-none placeholder:text-foreground/35 focus:ring-2 focus:ring-[#8B9A6E]/30 disabled:opacity-60 dark:focus:ring-blue-400/30"
           />
           {isLoading && (
             <span
               aria-label="Parsing…"
               role="status"
-              className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin rounded-full border-2 border-foreground/20 border-t-blue-500"
+              className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin rounded-full border-2 border-foreground/20 border-t-[#8B9A6E] dark:border-t-blue-500"
             />
           )}
         </div>
         <button
           type="submit"
           disabled={isLoading}
-          className="shrink-0 rounded-xl bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-blue-500 dark:hover:bg-blue-400"
+          className="shrink-0 rounded-xl bg-[#8B9A6E] px-4 text-sm font-medium text-white transition-colors hover:bg-[#76835E] disabled:cursor-not-allowed disabled:opacity-60 dark:bg-blue-500 dark:hover:bg-blue-400"
         >
           Go
         </button>
@@ -398,7 +398,7 @@ export default function QuickAddBar({
       {(stage.type === "confirm-add" ||
         stage.type === "confirm-cancel" ||
         stage.type === "confirm-modify") && (
-        <div className="mt-3 rounded-xl bg-blue-500/[0.06] p-3">
+        <div className="mt-3 rounded-xl bg-[#8B9A6E]/[0.08] p-3 dark:bg-blue-500/[0.06]">
           <div className="text-sm text-foreground">
             {stage.type === "confirm-add" && (
               <ConfirmAddSummary
@@ -470,7 +470,7 @@ export default function QuickAddBar({
             <button
               type="button"
               onClick={commit}
-              className="rounded-full bg-blue-600 px-3.5 py-1 text-xs font-semibold text-white transition-colors hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400"
+              className="rounded-full bg-[#8B9A6E] px-3.5 py-1 text-xs font-semibold text-white transition-colors hover:bg-[#76835E] dark:bg-blue-500 dark:hover:bg-blue-400"
             >
               Confirm
             </button>
@@ -512,7 +512,7 @@ function ConfirmAddSummary({
           value={title}
           onChange={(e) => onTitleChange(e.target.value)}
           aria-label="Edit title"
-          className="min-w-0 rounded-md border-0 border-b border-dashed border-foreground/25 bg-transparent px-0.5 py-0 font-semibold text-foreground outline-none focus:border-blue-500"
+          className="min-w-0 rounded-md border-0 border-b border-dashed border-foreground/25 bg-transparent px-0.5 py-0 font-semibold text-foreground outline-none focus:border-[#8B9A6E] dark:focus:border-blue-500"
           style={{ width: `${Math.max(4, title.length + 1)}ch` }}
         />
       </span>{" "}

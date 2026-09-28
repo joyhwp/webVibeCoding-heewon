@@ -49,7 +49,11 @@ if(!theme){
   var hour=now.getHours();
   theme=(hour>=6&&hour<18)?"light":"dark";
 }
-document.documentElement.setAttribute("data-theme",theme);
+var isClean=localStorage.getItem("cleanMode:v1")==="1";
+document.documentElement.setAttribute("data-theme",isClean?"clean":theme);
+if(isClean){document.documentElement.setAttribute("data-clean-base",theme);}
+var palette=localStorage.getItem("palette:v1");
+document.documentElement.setAttribute("data-palette",palette==="navy"?"navy":"sage");
 }catch(e){}})();`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -59,13 +63,19 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} h-full antialiased`}
     >
       <head>
+        {/* Home 탭 히어로/네비 전용 폰트(Pretendard) — .font-pretendard로 그
+            영역에만 적용한다. 사이트 기본 폰트(Geist Sans)는 그대로 유지. */}
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css"
+        />
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
       </head>
       <body className="flex min-h-full flex-col overflow-x-hidden">
         <AmbientBackground />
         <PasswordGate>
           <TabNav />
-          <main className="mx-auto w-full max-w-5xl flex-1 px-4 pb-16">
+          <main className="mx-auto w-full max-w-[1160px] flex-1 px-6 pb-20">
             <PageTransition>{children}</PageTransition>
           </main>
           <ToastContainer />

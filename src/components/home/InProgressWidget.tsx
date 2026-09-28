@@ -58,7 +58,7 @@ export default function InProgressWidget() {
           않게, 위젯 주변으로 은은하게 번지는 느낌을 준다 */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -inset-x-6 -inset-y-10 -z-10 overflow-visible"
+        className="pointer-events-none absolute -inset-x-6 -inset-y-10 -z-10 overflow-visible clean:hidden"
       >
         <div
           className="float-slow absolute -left-8 top-0 h-52 w-52 rounded-full opacity-40 blur-3xl"
@@ -78,19 +78,27 @@ export default function InProgressWidget() {
         className="relative flex flex-col gap-4"
         style={{ background: "color-mix(in srgb, var(--glass-bg) 65%, transparent)" }}
       >
-        <div className="flex items-center justify-between gap-3">
-          <h2 className="text-lg font-semibold tracking-tight">In Progress</h2>
+        <div className="font-pretendard flex flex-wrap items-end justify-between gap-3.5">
+          <div>
+            <p className="text-sm" style={{ color: "var(--hero-ink3)" }}>
+              In Progress
+            </p>
+            <h2 className="mt-1.5 text-[26px] font-bold tracking-[-0.03em]">
+              Projects &amp; reading
+            </h2>
+          </div>
           <div className="flex items-center gap-2">
             <Link
               href="/archive"
-              className="rounded-full bg-foreground/5 px-3 py-1.5 text-xs font-medium text-foreground/55 transition-colors hover:bg-foreground/10 hover:text-foreground/80"
+              className="rounded-full border px-[18px] py-2.5 text-sm font-medium transition-colors hover:bg-[var(--hero-chip)]"
+              style={{ borderColor: "var(--hero-line)", background: "var(--hero-card)" }}
             >
               Archive
             </Link>
             <button
               type="button"
               onClick={() => setFormOpen((v) => !v)}
-              className="rounded-full bg-blue-600/10 px-3 py-1.5 text-xs font-medium text-blue-700 transition-colors hover:bg-blue-600/20 dark:bg-blue-400/15 dark:text-blue-300 dark:hover:bg-blue-400/25"
+              className="rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background transition-opacity hover:opacity-90"
             >
               {formOpen ? "Cancel" : "+ New"}
             </button>
@@ -110,7 +118,7 @@ export default function InProgressWidget() {
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="What are you working on?"
                 required
-                className="glass-panel flex-1 rounded-xl border-0 px-4 py-2.5 text-sm outline-none placeholder:text-foreground/40 focus:ring-2 focus:ring-blue-500/30 dark:focus:ring-blue-400/30"
+                className="glass-panel flex-1 rounded-xl border-0 px-4 py-2.5 text-sm outline-none placeholder:text-foreground/40 focus:ring-2 focus:ring-[#8B9A6E]/30 dark:focus:ring-blue-400/30"
               />
               <datalist id="progress-book-titles">
                 {knownBookTitles.map((t) => (
@@ -125,7 +133,7 @@ export default function InProgressWidget() {
                   value={percent}
                   onChange={(e) => setInitialPercent(e.target.value)}
                   placeholder="%"
-                  className="glass-panel w-full rounded-xl border-0 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500/30 dark:focus:ring-blue-400/30 sm:w-20"
+                  className="glass-panel w-full rounded-xl border-0 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#8B9A6E]/30 dark:focus:ring-blue-400/30 sm:w-20"
                 />
               )}
             </div>

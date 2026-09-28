@@ -35,7 +35,7 @@ export default function ToastContainer() {
             toast.onUndo();
             dismissToast();
           }}
-          className="rounded-full bg-blue-600 px-3 py-1 text-xs font-semibold text-white transition-colors hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400"
+          className="rounded-full bg-[#8B9A6E] px-3 py-1 text-xs font-semibold text-white transition-colors hover:bg-[#76835E] dark:bg-blue-500 dark:hover:bg-blue-400"
         >
           Undo
         </button>
@@ -48,7 +48,7 @@ export default function ToastContainer() {
           ✕
         </button>
         <span
-          className="absolute bottom-0 left-0 h-0.5 bg-blue-500/60"
+          className="absolute bottom-0 left-0 h-0.5 bg-[#8B9A6E]/60 dark:bg-blue-500/60"
           style={{
             animation: `toast-countdown ${TOAST_DURATION_MS}ms linear forwards`,
           }}

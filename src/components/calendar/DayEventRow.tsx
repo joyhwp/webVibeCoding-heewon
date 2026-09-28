@@ -87,7 +87,7 @@ export default function DayEventRow({
           checked={completed}
           onChange={() => onToggleComplete(entry.id, entry.originDateKey)}
           aria-label="Mark complete"
-          className="mt-1 h-3.5 w-3.5 shrink-0 cursor-pointer accent-blue-600"
+          className="mt-1 h-3.5 w-3.5 shrink-0 cursor-pointer accent-[#8B9A6E] dark:accent-blue-600"
         />
       ) : (
         <span

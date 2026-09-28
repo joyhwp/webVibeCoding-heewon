@@ -13,7 +13,8 @@ export default function NavMenu() {
         onClick={() => setOpen((v) => !v)}
         aria-label="More menu"
         aria-expanded={open}
-        className="glass-panel flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-foreground/70 transition-colors hover:text-foreground"
+        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border text-foreground/70 transition-colors hover:text-foreground"
+        style={{ background: "var(--hero-card)", borderColor: "var(--hero-line)" }}
       >
         <svg viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4">
           <circle cx="4" cy="10" r="1.4" />

@@ -21,7 +21,7 @@ export default function TocSidebar({ category, onJump }: TocSidebarProps) {
             <button
               type="button"
               onClick={() => onJump(week.slug)}
-              className="text-left text-sm font-medium text-foreground/80 hover:text-blue-600 dark:hover:text-blue-400"
+              className="text-left text-sm font-medium text-foreground/80 hover:text-[#8B9A6E] dark:hover:text-blue-400"
             >
               {week.title}
             </button>
@@ -32,7 +32,7 @@ export default function TocSidebar({ category, onJump }: TocSidebarProps) {
                     <button
                       type="button"
                       onClick={() => onJump(week.slug, section.slug)}
-                      className="text-left text-[0.8rem] leading-snug text-foreground/50 hover:text-blue-600 dark:hover:text-blue-400"
+                      className="text-left text-[0.8rem] leading-snug text-foreground/50 hover:text-[#8B9A6E] dark:hover:text-blue-400"
                     >
                       <MdText text={section.title} inline />
                     </button>

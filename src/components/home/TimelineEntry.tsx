@@ -93,7 +93,7 @@ export default function TimelineEntry({
             checked={completed}
             onChange={() => onToggleComplete?.(entry.id, entry.originDateKey)}
             aria-label="Mark complete"
-            className="h-3.5 w-3.5 shrink-0 cursor-pointer accent-blue-600 opacity-40 transition-opacity group-hover:opacity-100"
+            className="h-3.5 w-3.5 shrink-0 cursor-pointer accent-[#8B9A6E] dark:accent-blue-600 opacity-40 transition-opacity group-hover:opacity-100"
           />
         )}
         <span
@@ -190,7 +190,7 @@ export default function TimelineEntry({
               checked={completed}
               onChange={() => onToggleComplete?.(entry.id, entry.originDateKey)}
               aria-label="Mark complete"
-              className="mt-0.5 h-3 w-3 shrink-0 cursor-pointer accent-blue-600 opacity-50 transition-opacity group-hover:opacity-100"
+              className="mt-0.5 h-3 w-3 shrink-0 cursor-pointer accent-[#8B9A6E] dark:accent-blue-600 opacity-50 transition-opacity group-hover:opacity-100"
             />
           )}
           <p
