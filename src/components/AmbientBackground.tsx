@@ -12,6 +12,9 @@ import CloudBackground from "@/components/CloudBackground";
  */
 export default function AmbientBackground() {
   const { theme } = useTheme();
+  // Clean 모드는 블러/그라데이션/별·구름 애니메이션을 전부 없앤 평면 배경이라
+  // 배경 컴포넌트 자체를 렌더링하지 않는다 (globals.css의 flat background만 사용).
+  if (theme === "clean") return null;
   if (theme === "dark") return <StarryBackground />;
   return <CloudBackground />;
 }
